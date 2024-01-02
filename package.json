@@ -1,0 +1,38 @@
+{
+  "name": "mern-starter-template",
+  "version": "1.0.0",
+  "description": "MongoDB, ExpressJS, ReactJs, and NodeJS starter template",
+  "main": "backend/server.js",
+  "type": "module",
+  "repository": "https://github.com/MAbdurahman/mern-auth-ultimate.git",
+  "author": "Mahdi Abdurrahman <mdbdrrhm@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node backend/server.js",
+    "server": "SET NODE_ENV=DEVELOPMENT& nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "nodemonConfig": {
+    "delay": 2000
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^8.1.0",
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-jwt": "^8.4.1",
+    "express-validator": "^7.0.1",
+    "google-auth-library": "^9.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.1"
+  }
+}
