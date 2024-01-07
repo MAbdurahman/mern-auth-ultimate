@@ -6,8 +6,17 @@ import catchAsyncError from '../middlewares/catchAsyncError.js';
 
 
 export const signUp = catchAsyncError( async (req, res, next) => {
+
+   const { fullName, email, password } = req.body;
+
+   const user = await User.create({
+      fullName,
+      email,
+      password
+   });
+
 	await res.json({
-		data: 'auth/sign-up endpoint'
+		user
 	})
  
 });
