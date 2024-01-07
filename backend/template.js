@@ -144,7 +144,7 @@ export default function Template() {
         <section id="home">
             <div class="page-title">
                 <h1>MERN APP SERVER</h1>
-                <h2>MongoDB, ExpressJS, ReactJS, and NodeJS</h2>
+                <h2>MongoDB, Express.js, React.js, and Node.js</h2>
             </div>
         </section>
     </div>

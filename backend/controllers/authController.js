@@ -1,23 +1,25 @@
-/**
- * backend/controllers/authController.js
- */
+
 import User from '../models/userModel.js';
+import ErrorHandler from '../utils/errorHandler.js';
+import catchAsyncError from '../middlewares/catchAsyncError.js';
 
-export const signUp = (req, res) => {
-   console.log(req.body)
-   res.json({
-      data: 'auth/sign-up endpoint'
-   })
-}
 
-export const signIn = (req, res) => {
-   res.json({
+
+export const signUp = catchAsyncError( async (req, res, next) => {
+	await res.json({
+		data: 'auth/sign-up endpoint'
+	})
+ 
+});
+
+export const signIn = catchAsyncError( async (req, res, next) => {
+   await res.json({
       data: 'auth/sign-in endpoint'
    })
-}
+});
 
-export const signOut = (req, res) => {
-   res.json({
+export const signOut = catchAsyncError( async (req, res) => {
+    await res.json({
       data: 'auth/sign-out endpoint'
    })
-}
+});
