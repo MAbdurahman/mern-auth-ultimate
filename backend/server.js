@@ -7,7 +7,6 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import connectDatabase from './config/configDatabase.js';
 import Template from "./template.js";
-import errorMiddleware from './middlewares/errors.js'
 
 import authRoutes from './routes/authRoutes.js';
 
@@ -28,7 +27,6 @@ connectDatabase();
 if (process.env.NODE_ENV === 'DEVELOPMENT') {
     app.use(morgan('dev'));
 }
-
 app.use(express.json());
 app.use(cookieParser());
 
@@ -45,9 +43,8 @@ app.get('/api/v1.0/', (req, res) => {
 app.use('/api/v1.0/auth', authRoutes);
 
 //**************** handle errors middleware ****************//
-app.use(errorMiddleware);
-/*
-app.use((err, req, res, next) => {
+
+/*app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
     const message = err.message || 'Internal Server Error';
     return res.status(statusCode).json({
@@ -56,10 +53,11 @@ app.use((err, req, res, next) => {
 });*/
 
 //**************** handling unhandled promise rejection ****************//
+/*
 process.on('unhandledRejection', err => {
     console.log(`ERROR: ${err.stack}`);
     console.log('Shutting down the server due to Unhandled Promise Rejection!');
     server.close(() => {
         process.exit(1);
     });
-});
+});*/

@@ -1,34 +1,34 @@
-
+import bcrypt from 'bcrypt';
 import User from '../models/userModel.js';
 import ErrorHandler from '../utils/errorHandler.js';
-import catchAsyncError from '../middlewares/catchAsyncError.js';
+import {validateName, validateEmail, validatePassword} from '../utils/validateHandler.js';
 
 
+export const signUp = async (req, res) => {
+   const { name, email, password } = req.body
 
-export const signUp = catchAsyncError( async (req, res, next) => {
+   const existingUser = await User.findOne({ email });
 
-   const { fullName, email, password } = req.body;
+   if (existingUser) {
+      return res.status(400).json({ error: "Email already exists!" });
 
-   const user = await User.create({
-      fullName,
-      email,
-      password
-   });
+   }
 
-	await res.json({
-		user
-	})
- 
-});
+   const newUser = new User({ name, email, password })
+   await newUser.save()
 
-export const signIn = catchAsyncError( async (req, res, next) => {
+   res.status(201).json({ user: newUser })
+
+};
+
+export const signIn = async (req, res) => {
    await res.json({
       data: 'auth/sign-in endpoint'
    })
-});
+};
 
-export const signOut = catchAsyncError( async (req, res) => {
+export const signOut = async (req, res) => {
     await res.json({
       data: 'auth/sign-out endpoint'
    })
-});
+};
