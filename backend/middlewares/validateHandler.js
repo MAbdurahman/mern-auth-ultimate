@@ -2,7 +2,7 @@
 import {check, validationResult} from 'express-validator';
 
 export const validateUser = [
-   check("name").trim().not().isEmpty().withMessage("Name is required!"),
+   check("name").trim().not().isEmpty().withMessage("Please enter your first and last name!"),
    check("email").normalizeEmail().isEmail().withMessage("Valid email is required!"),
    check("password")
       .trim()

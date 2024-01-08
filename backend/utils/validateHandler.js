@@ -6,10 +6,12 @@ export function validateEmail(email) {
    let isEmailValidate = false;
 
    if (email.length === 0) {
-      return next(new ErrorHandler('Your email is required!', 400));
+      /*return next(new ErrorHandler('Your email is required!', 400));*/
+      throw new ErrorHandler('Your email is required!', 400);
    }
    if (!email.match(email_pattern)) {
-      return next(new ErrorHandler('Enter a valid email!', 400));
+      /*return next(new ErrorHandler('Enter a valid email!', 400));*/
+      throw new ErrorHandler('Enter a valid email', 400);
    }
    isEmailValidate = true;
    return isEmailValidate;
@@ -21,10 +23,12 @@ export function validateName(name) {
    let isNameValid = false;
 
    if (name.length === 0) {
-      return next(new ErrorHandler('Your first and last name are required!', 400));
+      /*return next(new ErrorHandler('Your first and last name are required!', 400));*/
+      throw new ErrorHandler('Your first and last name are required!', 400);
    }
    if (!name.match(name_pattern)) {
-      return next(new ErrorHandler('Enter your first and last name!', 400));
+      /*return next(new ErrorHandler('Enter your first and last name!', 400));*/
+      throw new ErrorHandler('Enter your first and last name!', 400);
    }
    isNameValid = true;
    return isNameValid;
@@ -41,22 +45,28 @@ export function validatePassword(password) {
    let isPasswordValid = false;
 
    if (password.length === 0) {
-      return next(new ErrorHandler('A password is required!', 400));
+      /*return next(new ErrorHandler('A password is required!', 400));*/
+      throw new ErrorHandler('A password is required!', 400);
    }
    if (!password.match(lowercase_pattern)) {
-      return next(new ErrorHandler('Password must have at least one lowercase character!', 400));
+      /*return next(new ErrorHandler('Password must have at least one lowercase character!', 400));*/
+      throw new ErrorHandler('Password must have at least one lowercase character!', 400);
    }
    if (!password.match(uppercase_pattern)) {
-      return next(new ErrorHandler('Password must have at least one uppercase character!', 400));
+      /*return next(new ErrorHandler('Password must have at least one uppercase character!', 400));*/
+      throw new ErrorHandler('Password must have at least one uppercase character!', 400);
    }
    if (!password.match(digit_pattern)) {
-      return next(new ErrorHandler('Password must have at least one number character!', 400));
+      /*return next(new ErrorHandler('Password must have at least one number character!', 400));*/
+      throw new ErrorHandler('Password must have at least one number character!', 400);
    }
    if (!password.match(special_pattern)) {
-      return next(new ErrorHandler(`Password must include at least one: '-+_!@#$%^&*?'`, 400));
+      /*return next(new ErrorHandler(`Password must include at least one: '-+_!@#$%^&*?'`, 400));*/
+      throw new ErrorHandler(`Password must include at least one: '-+_!@#$%^&*?'`, 400);
    }
    if (!password.match(password_pattern)) {
-      return next(new ErrorHandler('Password must have at least 8 characters!', 400));
+      /*return next(new ErrorHandler('Password must have at least 8 characters!', 400));*/
+      throw new ErrorHandler('Password must have at least 8 characters!', 400);
    }
    isPasswordValid = true;
    return isPasswordValid;
