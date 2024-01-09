@@ -18,7 +18,6 @@ const emailVerificationModel = mongoose.Schema({
       default: Date.now(),
    },
 });
-
 emailVerificationModel.pre("save", async function (next) {
    if (this.isModified("token")) {
       this.token = await bcrypt.hash(this.token, 10);
@@ -26,6 +25,11 @@ emailVerificationModel.pre("save", async function (next) {
 
    next();
 });
+
+emailVerificationModel.methods.compareToken = async function (token) {
+   const result = await bcrypt.compare(token, this.token);
+   return result;
+};
 
 const EmailVerification = mongoose.model('emailVerification', emailVerificationModel)
 export default EmailVerification;

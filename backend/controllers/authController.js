@@ -42,8 +42,9 @@ export const signUp = async (req, res) => {
       to: newUser.email,
       subject: 'Email Verification',
       html: `
-      <h1>Your verification OTP</h1>
-      <h2>${OTP}</h2>
+      <h1>Email Verification Code</h1>
+      <h2>Please find below your verification code</h2>
+      <h3>${OTP}</h3>
     `
    });
 
@@ -61,4 +62,55 @@ export const signOut = async (req, res) => {
    await res.json({
       data: 'auth/sign-out endpoint'
    })
+};
+
+export const verifyEmail = async (req, res) => {
+   const { userId, OTP } = req.body
+
+   if (!isValidObjectId(userId)) {
+      return res.json({ error: "Invalid user!" })
+   }
+
+   const user = await User.findById(userId)
+   if (!user) {
+      return res.json({ error: "User not found!" })
+   }
+
+   if (user.isVerified) {
+      return res.json({ error: "User already verified!" })
+   }
+
+   const token = await EmailVerification.findOne({ owner: userId })
+   if (!token) {
+      return res.json({ error: 'Token not found!' })
+   }
+
+   const isMatched = await token.compareToken(OTP)
+   if (!isMatched) {
+      return res.json({ error: 'Please submit a valid OTP!' })
+   }
+
+   user.isVerified = true;
+   await user.save();
+
+   await EmailVerification.findByIdAndDelete(token._id);
+
+   var transport = nodemailer.createTransport({
+      host: "sandbox.smtp.mailtrap.io",
+      port: 2525,
+      auth: {
+         user: process.env.MAIL_TRAP_USER ,
+         pass: process.env.MAIL_TRAP_PASS
+      }
+   });
+
+   transport.sendMail({
+      from: 'verification@mern_auth_ultimate.com',
+      to: user.email,
+      subject: 'Welcome Email',
+      html: '<h1>Welcome to our app, and thanks for verifying your email.</h1>'
+   })
+
+   res.json({ message: "Your email has been verified." })
+
 };
