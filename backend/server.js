@@ -7,8 +7,10 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import connectDatabase from './config/configDatabase.js';
 import Template from "./template.js";
+import {errorsHandlerMiddleware} from './middlewares/errorsHandlerMiddleware.js';
 
 import authRoutes from './routes/authRoutes.js';
+import ErrorHandler from './utils/errorHandler.js';
 
 //**************** configuration setup ****************//
 dotenv.config({path: 'backend/config/config.env'});
@@ -43,6 +45,7 @@ app.get('/api/v1.0/', (req, res) => {
 app.use('/api/v1.0/auth', authRoutes);
 
 //**************** handle errors middleware ****************//
+app.use(errorsHandlerMiddleware);
 
 /*app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;
