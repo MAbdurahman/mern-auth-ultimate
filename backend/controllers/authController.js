@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import User from '../models/userModel.js';
 import EmailVerification from '../models/emailVerificationModel.js';
+import { isValidObjectId } from 'mongoose';
 
 
 export const signUp = async (req, res) => {
@@ -17,22 +18,25 @@ export const signUp = async (req, res) => {
    await newUser.save();
 
    /**************** generate 6 digit OTP****************/
-   let OTP = "";
+   let OTP = '';
    for (let i = 1; i <= 5; i++) {
       const randomValue = Math.round(Math.random() * 9);
       OTP += randomValue;
    }
 
    /**************** store OTP in database ****************/
-   const newEmailVerification = new EmailVerification({ owner: newUser._id, token: OTP });
+   const newEmailVerification = new EmailVerification({
+      owner: newUser._id,
+      token: OTP
+   });
    await newEmailVerification.save();
 
    /**************** send OTP to user email ****************/
    var transport = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
+      host: 'sandbox.smtp.mailtrap.io',
       port: 2525,
       auth: {
-         user: process.env.MAIL_TRAP_USER ,
+         user: process.env.MAIL_TRAP_USER,
          pass: process.env.MAIL_TRAP_PASS
       }
    });
@@ -48,7 +52,7 @@ export const signUp = async (req, res) => {
     `
    });
 
-   res.status(201).json({ message: `Please verify your email. OTP has been sent to ${newUser.email}` });
+   res.status(201).json({message: `Please verify your email. OTP has been sent to ${newUser.email}`});
 
 };
 
@@ -65,29 +69,29 @@ export const signOut = async (req, res) => {
 };
 
 export const verifyEmail = async (req, res) => {
-   const { userId, OTP } = req.body
+   const {userId, OTP} = req.body;
 
    if (!isValidObjectId(userId)) {
-      return res.json({ error: "Invalid user!" })
+      return res.json({error: 'Invalid user!'})
    }
 
    const user = await User.findById(userId)
    if (!user) {
-      return res.json({ error: "User not found!" })
+      return res.json({error: 'User not found!'})
    }
 
    if (user.isVerified) {
-      return res.json({ error: "User already verified!" })
+      return res.json({error: 'User already verified!'})
    }
 
-   const token = await EmailVerification.findOne({ owner: userId })
+   const token = await EmailVerification.findOne({owner: userId})
    if (!token) {
-      return res.json({ error: 'Token not found!' })
+      return res.json({error: 'Token not found!'})
    }
 
    const isMatched = await token.compareToken(OTP)
    if (!isMatched) {
-      return res.json({ error: 'Please submit a valid OTP!' })
+      return res.json({error: 'Please submit a valid OTP!'})
    }
 
    user.isVerified = true;
@@ -96,10 +100,10 @@ export const verifyEmail = async (req, res) => {
    await EmailVerification.findByIdAndDelete(token._id);
 
    var transport = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
+      host: 'sandbox.smtp.mailtrap.io',
       port: 2525,
       auth: {
-         user: process.env.MAIL_TRAP_USER ,
+         user: process.env.MAIL_TRAP_USER,
          pass: process.env.MAIL_TRAP_PASS
       }
    });
@@ -108,9 +112,70 @@ export const verifyEmail = async (req, res) => {
       from: 'verification@mern_auth_ultimate.com',
       to: user.email,
       subject: 'Welcome Email',
-      html: '<h1>Welcome to our app, and thanks for verifying your email.</h1>'
+      html: `
+        <h1>Welcome To MERN Auth Ultimate</h1>
+        <h2>Thanks for verifying your email</h2>      
+`
    })
 
-   res.json({ message: "Your email has been verified." })
+   res.json({message: 'Your email has been verified.'})
 
+};
+
+export const resendEmailVerification = async (req, res) => {
+   const {userId} = req.body;
+
+   const user = await User.findById(userId);
+   if (!user) {
+      return res.json({error: 'User not found!'});
+   }
+
+   if (user.isVerified){
+      return res.json({error: 'Email already verified!'});
+   }
+
+   const alreadyHasToken = await EmailVerification.findOne({
+      owner: userId,
+   });
+   if (alreadyHasToken)
+      return res.json({error: 'After one hour, request for another token!'});
+
+   /**************** generate 6 digit OTP****************/
+   let OTP = '';
+   for (let i = 1; i <= 5; i++) {
+      const randomVal = Math.round(Math.random() * 9);
+      OTP += randomVal;
+   }
+
+   /**************** store OTP in database ****************/
+   const newEmailVerification = new EmailVerification({
+      owner: user._id,
+      token: OTP
+   })
+   await newEmailVerification.save()
+
+   /**************** send OTP to user email ****************/
+   var transport = nodemailer.createTransport({
+      host: 'sandbox.smtp.mailtrap.io',
+      port: 2525,
+      auth: {
+         user: process.env.MAIL_TRAP_USER,
+         pass: process.env.MAIL_TRAP_PASS
+      }
+   });
+
+   transport.sendMail({
+      from: 'verification@mern_auth_ultimate.com',
+      to: user.email,
+      subject: 'Resent Email Verification',
+      html: `
+        <h1>Resent Email Verification</h1>
+        <h2>Please find below your new verification code</h2>
+        <h3>${OTP}</h3>
+        `
+   });
+
+   res.json({
+      message: `Please verify your email.  New OTP has been sent to ${user.email}.`
+   });
 };
