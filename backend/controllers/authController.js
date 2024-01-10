@@ -1,8 +1,9 @@
 import nodemailer from 'nodemailer';
 import User from '../models/userModel.js';
 import EmailVerificationToken from '../models/emailVerificationTokenModel.js';
+import PasswordResetToken from '../models/passwordResetTokenModel.js';
 import { isValidObjectId } from 'mongoose';
-import { generateOTPCode, generateMailTransporter } from '../utils/mailHandlers.js';
+import { generateOTPCode, generateMailTransporter, generateRandomByte } from '../utils/mailHandlers.js';
 import ErrorHandler from '../utils/errorHandler.js';
 
 export const signUp = async (req, res, next) => {
@@ -131,7 +132,7 @@ export const resendEmailVerificationToken = async (req, res, next) => {
    });
    if (alreadyHasToken)
       /*return res.json({error: 'After one hour, request for another token!'});*/
-      return next(new ErrorHandler('Token already exists! After one hour, request another token!', 400))
+      return next(new ErrorHandler('Token already exists! After an hour, request another token!', 400));
 
    /**************** generate 6 digit OTP****************/
    let OTP = generateOTPCode();
@@ -160,4 +161,47 @@ export const resendEmailVerificationToken = async (req, res, next) => {
    res.json({
       message: `Please verify your email.  New OTP has been sent to ${user.email}.`
    });
+};
+
+export const forgotPassword = async (req, res, next) => {
+   const { email } = req.body;
+
+   if (!email) {
+      return next(new ErrorHandler('Email is required!'), 400);
+   }
+
+   const user = await User.findOne({ email });
+   if (!user) {
+      return next(new ErrorHandler('User not found!', 404));
+   }
+
+   const alreadyHasToken = await PasswordResetToken.findOne({ owner: user._id });
+   if (alreadyHasToken) {
+      return next(new ErrorHandler('Token already exists! After an hour, request another token!', 400));
+   }
+
+   const token = await generateRandomByte();
+   const newPasswordResetToken = await PasswordResetToken({
+      owner: user._id,
+      token,
+   });
+   await newPasswordResetToken.save();
+
+   const resetPasswordUrl = `http://localhost:3000/reset-password?token=${token}&id=${user._id}`;
+
+   const transport = generateMailTransporter();
+
+   transport.sendMail({
+      from: "security@mern_auth_ultimate.com",
+      to: user.email,
+      subject: "Reset Password",
+      html: `
+      <h1>Click the link below to your reset password</h1>
+      <p>
+        <a href='${resetPasswordUrl}'>Reset Password</a>
+      </p> 
+    `,
+   });
+   res.json({ message: `A link was sent to your email at ${user.email}.` });
+
 };
