@@ -13,7 +13,17 @@ export const validateUser = [
       .withMessage("Password must have between 8 to 32 characters!")
 ];
 
-export const executeValidateUser = (req, res, next) => {
+export const validatePassword = [
+   check("newPassword")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("Password is missing!")
+      .isLength({ min: 8, max: 32 })
+      .withMessage("Password must have between 8 to 32 characters!")
+];
+
+export const executeValidator = (req, res, next) => {
    const error = validationResult(req).array();
    if (error.length) {
       return res.json({ error: error[0].msg });

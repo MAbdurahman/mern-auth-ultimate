@@ -205,3 +205,38 @@ export const forgotPassword = async (req, res, next) => {
    res.json({ message: `A link was sent to your email at ${user.email}.` });
 
 };
+
+export const verifyPasswordResetToken = async (req, res) => {
+   await res.status(201).json({ valid: true });
+};
+
+export const resetPassword = async (req, res, next) => {
+   const { newPassword, userId } = req.body;
+
+   const user = await User.findById(userId);
+   const matched = await user.comparePassword(newPassword);
+   if (matched) {
+      return next(new ErrorHandler('The new password must be different than the old password!', 400));
+   }
+
+   user.password = newPassword;
+   await user.save();
+
+   await PasswordResetToken.findByIdAndDelete(req.resetToken._id);
+
+   const transport = generateMailTransporter();
+   transport.sendMail({
+      from: "security@mern_auth_ultimate.com",
+      to: user.email,
+      subject: "Password Reset Successfully",
+      html: `
+      <h1>Password Reset Successfully</h1>
+      <p>Your password was successfully reset.</p>
+      <p>Sign in using your new password.</p>
+    `,
+   });
+
+   res.status(201).json({
+      message: "Password reset successfully!"
+   });
+};
