@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 import EmailVerificationToken from '../models/emailVerificationTokenModel.js';
 import PasswordResetToken from '../models/passwordResetTokenModel.js';
@@ -7,12 +8,20 @@ import { generateOTPCode, generateMailTransporter, generateRandomByte } from '..
 import ErrorHandler from '../utils/errorHandler.js';
 
 export const signUp = async (req, res, next) => {
-   const {name, email, password} = req.body
+   const {name, email, password} = req.body;
+
+   if (!name) {
+      return next(new ErrorHandler('Please enter name!', 400));
+   }
+   if (!email) {
+      return next(new ErrorHandler('Please enter email!', 400));
+   }
+   if (!password) {
+      return next(new ErrorHandler('Please enter password!', 400));
+   }
 
    const existingUser = await User.findOne({email});
-
    if (existingUser) {
-      /*return res.status(400).json({error: 'Email already exists!'});*/
       return next(new ErrorHandler('Email already exists!', 400));
 
    }
@@ -48,10 +57,32 @@ export const signUp = async (req, res, next) => {
 
 };
 
-export const signIn = async (req, res) => {
-   await res.json({
-      data: 'auth/sign-in endpoint'
-   })
+export const signIn = async (req, res, next) => {
+   const {email, password} = req.body;
+   /**************** check if email and password is entered by user****************/
+   if (!email) {
+      return next(new ErrorHandler('Please enter email!', 400));
+   }
+   if (!password) {
+      return next(new ErrorHandler('Please enter password!', 400));
+   }
+   /**************** finding user in database ****************/
+   const user = await User.findOne({ email });
+   if (!user) {
+      return next(new ErrorHandler('Invalid email or password!', 401));
+   }
+   /**************** checks if password is correct or not ****************/
+   const isMatchedPasswords = await user.comparePassword(password);
+
+   if (!isMatchedPasswords) {
+      return next(new ErrorHandler('Invalid Email or Password', 401));
+   }
+   const {_id, name} = user;
+   const jwtToken = jwt.sign({ userId: _id }, process.env.JWT_SECRET_KEY, {expiresIn: process.env.JWT_EXPIRES_TIME});
+
+   await res.status(201).json({
+      user: { id: _id, name, email, token: jwtToken }
+   });
 };
 
 export const signOut = async (req, res) => {
