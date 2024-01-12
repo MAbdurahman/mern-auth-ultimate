@@ -24,7 +24,6 @@ const API_URL = process.env.API_ENV || "/api/v1.0/";
 
 //**************** connect to database ****************//
 connectDatabase();
-
 //**************** middlewares ****************//
 if (process.env.NODE_ENV === 'DEVELOPMENT') {
     app.use(morgan('dev'));

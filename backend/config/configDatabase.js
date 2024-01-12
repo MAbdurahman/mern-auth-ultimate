@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import colors from 'colors';
 
 colors.enable();
+mongoose.set('strictQuery', true);
 const connectDatabase = async () => {
     try {
         const conn = await mongoose.connect(process.env.MONGO_DB_URI);
