@@ -9,11 +9,26 @@ export default function SignIn() {
          <Container>
             <form className="bg-secondary rounded p-6 min-w-30 space-y-6 pb-9">
                <Title>Sign In</Title>
-               <FormInput label="Email" placeholder="example@email.com" name="email" />
-               <FormInput label="Password" placeholder="********" name="password" />
-               <SubmitButton value="Sign In" />
+               <FormInput label="Email" placeholder="example@email.com"
+                          name="email"/>
+               <FormInput label="Password" placeholder="********" name="password"/>
+               <SubmitButton value="Sign In"/>
+               <div className="flex justify-end">
+                  <a
+                     className="text-dark-subtle hover:text-white transition capitalize cursor-pointer"
+                     href="/forgot-password"
+                  >
+                     Forgot password&nbsp;/
+                  </a>
+                  <a
+                     className="text-dark-subtle hover:text-white transition capitalize cursor-pointer"
+                     href="/api/v1.0/auth/sign-up"
+                  >
+                     &nbsp;Sign up
+                  </a>
+               </div>
             </form>
-      </Container>
+         </Container>
       </div>
    )
 }
