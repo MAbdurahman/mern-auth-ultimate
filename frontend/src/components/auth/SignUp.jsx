@@ -2,6 +2,7 @@ import Container from '../Container';
 import Title from '../Title';
 import FormInput from '../forms/FormInput';
 import SubmitButton from '../forms/SubmitButton';
+import CustomLink from '../CustomLink';
 
 export default function SignUp() {
    return (
@@ -15,16 +16,8 @@ export default function SignUp() {
                <FormInput label="Password" placeholder="*************" name="password"/>
                <SubmitButton value="Sign Up"/>
                <div className="flex justify-end">
-                  <a className="text-dark-subtle hover:text-white transition capitalize cursor-pointer"
-                     href="/auth/forgot-password"
-                  >
-                     Forget password&nbsp;/
-                  </a>
-                  <a className="text-dark-subtle hover:text-white transition capitalize cursor-pointer"
-                     href="/auth/sign-in"
-                  >
-                     &nbsp;Sign in
-                  </a>
+                  <CustomLink to="/auth/forgot-password">Forgot Password&nbsp;/</CustomLink>
+                  <CustomLink to="/auth/sign-in">&nbsp;Sign In</CustomLink>
                </div>
             </form>
          </Container>
