@@ -35,6 +35,20 @@
    h5 {
       font-size: 1.25rem;
    }
+
+   /* Chrome, Safari, Edge, Opera */
+   input::-webkit-outer-spin-button,
+   input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+      @apply font-monospace;
+   }
+
+   /* Firefox */
+   input[type=number] {
+      -moz-appearance: textfield;
+      @apply font-monospace;
+   }
 }
 
 @layer utilities {
