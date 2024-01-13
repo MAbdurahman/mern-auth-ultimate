@@ -3,3 +3,182 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+   h1,
+   h2,
+   h3,
+   h4,
+   h5 {
+
+      @apply font-heading;
+      font-weight: 600;
+      line-height: 1.3;
+   }
+
+   h1 {
+      font-size: 3.052rem;
+   }
+
+   h2 {
+      font-size: 2.441rem;
+   }
+
+   h3 {
+      font-size: 1.953rem;
+   }
+
+   h4 {
+      font-size: 1.563rem;
+   }
+
+   h5 {
+      font-size: 1.25rem;
+   }
+}
+
+@layer utilities {
+   .h1,
+   .h2,
+   .h3,
+   .h4,
+   .h5 {
+      margin: 3rem 0 1.38rem;
+      @apply font-heading;
+      font-weight: 600;
+      line-height: 1.3;
+   }
+
+   .h1 {
+      font-size: 3.052rem;
+   }
+
+   .h2 {
+      font-size: 2.441rem;
+   }
+
+   .h3 {
+      font-size: 1.953rem;
+   }
+
+   .h4 {
+      font-size: 1.563rem;
+   }
+
+   .h5 {
+      font-size: 1.25rem;
+   }
+
+   .flex-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   }
+   .grid-center {
+      display: grid;
+      place-items: center;
+   }
+   .grid-container {
+      margin: 3em auto;
+      width: 90%;
+      display: grid;
+      row-gap: 3rem;
+      column-gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+   }
+   .grid-container-12 {
+      /*margin: 3em auto 1em;*/
+      margin: 0 auto;
+      width: 90%;
+      display: grid;
+      row-gap: 3rem;
+      column-gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+   }
+   .grid-column-1 {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+      column-gap: 2rem;
+   }
+   .grid-column-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 2rem;
+   }
+   .grid-column-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 2rem;
+   }
+   .grid-column-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 2rem;
+   }
+
+   .min-w-30 {
+      min-width: 30rem;
+   }
+   .sub-heading-container {
+      width: 80%;
+      margin: 0 auto;
+   }
+   .sub-heading {
+      margin-bottom: 1em;
+      margin-left: 1em;
+   }
+   .row {
+      float: left;
+      width: 100%;
+      padding: 20px 0 50px;
+   }
+   .form-input {
+      position: relative;
+   }
+
+   .outer-container {
+      margin: 0 auto;
+      max-width: 1200px;
+   }
+   .extra-margin-bottom {
+      margin-bottom: 34rem;
+      padding-bottom: 34rem;
+   }
+
+
+   /* Extra small devices (portrait phones, less than 576px) */
+   @media (max-width: 575px) {
+      .wrapper {
+         max-width: 100%;
+      }
+   }
+
+   /* Small devices (landscape phones, less than 768px) */
+   @media (max-width: 767px) {
+      .wrapper {
+         max-width: 544px;
+      }
+   }
+
+   /* Medium devices (tablets, less than 992px) */
+   @media (max-width: 991px) {
+      .wrapper {
+         max-width: 720px;
+      }
+   }
+
+   /* Large devices (desktops, less than 1200px) */
+   @media (max-width: 1199px) {
+      .wrapper {
+         max-width: 960px;
+      }
+   }
+
+   /* Extra large devices (large desktops) */
+   /* No media query since the extra-large breakpoint has no upper bound on its width */
+
+   .wrapper {
+      max-width: 1144px;
+      margin: 0 auto;
+   }
+}
