@@ -3,7 +3,7 @@ import Title from '../Title';
 import FormInput from '../forms/FormInput';
 import SubmitButton from '../forms/SubmitButton';
 
-export function SignUp() {
+export default function SignUp() {
    return (
       <div
          className="fixed inset-0 bg-primary -z-10 flex justify-center items-center">
@@ -16,12 +16,12 @@ export function SignUp() {
                <SubmitButton value="Sign Up"/>
                <div className="flex justify-end">
                   <a className="text-dark-subtle hover:text-white transition capitalize cursor-pointer"
-                     href="/api/v1.0/auth/forgot-password"
+                     href="/auth/forgot-password"
                   >
                      Forget password&nbsp;/
                   </a>
                   <a className="text-dark-subtle hover:text-white transition capitalize cursor-pointer"
-                     href="/api/v1.0/auth/sign-in"
+                     href="/auth/sign-in"
                   >
                      &nbsp;Sign in
                   </a>

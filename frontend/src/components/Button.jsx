@@ -5,7 +5,7 @@ export default function Button({children}) {
    const navigate = useNavigate();
 
    function handleClick() {
-      navigate('/api/v1.0/auth/sign-in');
+      navigate('/auth/sign-in');
    }
 
    return (<button onClick={handleClick}
