@@ -1,12 +1,15 @@
-
 import Container from '../Container';
 import Title from '../Title';
 import FormInput from '../forms/FormInput';
 import SubmitButton from '../forms/SubmitButton';
 import CustomLink from '../CustomLink';
+import {useTheme} from '../../hooks/themehook';
 
 
 export default function SignIn() {
+   const theme = useTheme();
+   theme.method();
+
    return (
       <div className="fixed inset-0 bg-primary -z-10 flex justify-center items-center">
          <Container>
