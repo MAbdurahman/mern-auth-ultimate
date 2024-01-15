@@ -3,17 +3,14 @@ import Title from '../Title';
 import FormInput from '../forms/FormInput';
 import SubmitButton from '../forms/SubmitButton';
 import CustomLink from '../CustomLink';
-import {useTheme} from '../../hooks/themehook';
-
 
 export default function SignIn() {
-   const theme = useTheme();
-   theme.method();
+
 
    return (
-      <div className="fixed inset-0 bg-primary -z-10 flex justify-center items-center">
+      <div className="fixed inset-0 dark:bg-primary bg-white -z-10 flex justify-center items-center">
          <Container>
-            <form className="bg-secondary rounded p-6 min-w-30 space-y-6 pb-9">
+            <form className="dark:bg-secondary bg-white drop-shadow-lg rounded p-6 min-w-30 space-y-6 pb-9">
                <Title>Sign In</Title>
                <FormInput label="Email" placeholder="example@email.com"
                           name="email"/>
