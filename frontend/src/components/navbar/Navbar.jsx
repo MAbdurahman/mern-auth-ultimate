@@ -24,7 +24,7 @@ export default function Navbar() {
                   </Link>
                   <ul className="flex items-center space-x-4">
                      <li>
-                        <button onClick={toggleTheme} className="bg-dark-subtle p-1 rounded">
+                        <button onClick={toggleTheme} className="dark:bg-white bg-dark-subtle p-1 rounded">
                            <BsFillSunFill className="text-secondary" size={24}/>
                         </button>
                      </li>

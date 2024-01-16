@@ -3,13 +3,14 @@ import Title from '../Title';
 import FormInput from '../forms/FormInput';
 import SubmitButton from '../forms/SubmitButton';
 import CustomLink from '../CustomLink';
+import {themeFormClasses} from '../../utils/themeUtils';
+import FormContainer from '../forms/FormContainer';
 
 export default function SignUp() {
    return (
-      <div
-         className="fixed inset-0 bg-primary -z-10 flex justify-center items-center">
+      <FormContainer>
          <Container>
-            <form className="bg-secondary rounded p-6 min-w-30 space-y-6 pb-9">
+            <form className={themeFormClasses}>
                <Title>Sign Up</Title>
                <FormInput label="Name" placeholder="Full name" name="name" />
                <FormInput label="Email" placeholder="example@email.com" name="email"/>
@@ -21,6 +22,6 @@ export default function SignUp() {
                </div>
             </form>
          </Container>
-      </div>
+      </FormContainer>
    )
 }
