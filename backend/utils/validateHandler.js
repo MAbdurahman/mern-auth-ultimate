@@ -19,7 +19,8 @@ export function validateEmail(email) {
 }
 
 export function validateName(name) {
-   const name_pattern = /^([a-zA-Z]{2,}\s[a-zA-z]{1,}'?-?[a-zA-Z]{1,}\s?([a-zA-Z]{1,})?)/;
+   /*const name_pattern = /^([a-zA-Z]{2,}\s[a-zA-z]{1,}'?-?[a-zA-Z]{1,}\s?([a-zA-Z]{1,})?)/;*/
+   const name_pattern = /^([A-Za-z]{1,}s?'?-?[A-Za-z]{1,}s?'?-?[a-zA-Z]{1,})(.+?)([^\s,]+)(,? (?:[JS]r\.?|II|III|IV))?$/i;
    let isNameValid = false;
 
    if (name.length === 0) {
