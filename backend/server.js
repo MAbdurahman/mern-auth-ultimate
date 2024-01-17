@@ -3,11 +3,13 @@ import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import colors from 'colors';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import connectDatabase from './config/configDatabase.js';
 import Template from "./template.js";
 import {errorsHandlerMiddleware} from './middlewares/errorsHandlerMiddleware.js';
+import {handleNotFound} from './controllers/authController.js';
 
 import authRoutes from './routes/authRoutes.js';
 import ErrorHandler from './utils/errorHandler.js';
@@ -28,6 +30,7 @@ connectDatabase();
 if (process.env.NODE_ENV === 'DEVELOPMENT') {
     app.use(morgan('dev'));
 }
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
@@ -42,7 +45,13 @@ app.get('/api/v1.0/', (req, res) => {
 });
 
 app.use('/api/v1.0/auth', authRoutes);
-
+if (process.env.NODE_ENV === 'PRODUCTION') {
+    const __dirname = path.resolve();
+    app.use(express.static(path.join(__dirname, '/frontend/dist')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
+    })
+}
 //**************** handle errors middleware ****************//
 app.use(errorsHandlerMiddleware);
 

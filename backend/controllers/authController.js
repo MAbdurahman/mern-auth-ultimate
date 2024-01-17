@@ -277,3 +277,7 @@ export const resetPassword = async (req, res, next) => {
       message: "Password reset successfully!"
    });
 };
+
+export const handleNotFound = (req, res, next) => {
+   return next(new ErrorHandler('Resource Not Found!', 404));
+};
