@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import {useLocation, useNavigate} from 'react-router-dom';
 import Container from '../Container';
 import Title from '../Title';
 import SubmitButton from '../forms/SubmitButton';
@@ -13,6 +14,10 @@ export default function VerifyEmail() {
    const [activeOTPIndex, setActiveOTPIndex] = useState(0);
 
    const inputRef = useRef();
+
+   const navigate = useNavigate();
+   const { state } = useLocation();
+   const user = state?.user;
 
    const focusNextInputField = (index) => {
       setActiveOTPIndex(index + 1);
@@ -48,6 +53,12 @@ export default function VerifyEmail() {
    useEffect(() => {
       inputRef.current?.focus();
    }, [activeOTPIndex]);
+
+   useEffect(() => {
+      if (!user) {
+         navigate('/not-found');
+      }
+   }, [navigate, user]);
 
    return (
       <FormContainer>

@@ -6,6 +6,7 @@ import HomePage from '../pages/HomePage';
 import VerifyEmail from '../components/auth/VerifyEmail';
 import ForgotPassword from '../components/auth/ForgotPassword';
 import ConfirmPassword from '../components/auth/ConfirmPassword';
+import NotFoundPage from '../pages/NotFoundPage';
 
 export default function App() {
 
@@ -19,6 +20,7 @@ export default function App() {
              <Route path="/auth/verify-email" element={<VerifyEmail />} />
              <Route path="/auth/forgot-password" element={<ForgotPassword />} />
              <Route path="/auth/confirm-password" element={<ConfirmPassword />} />
+             <Route path="*" element={<NotFoundPage />} />
           </Routes>
        </>
 

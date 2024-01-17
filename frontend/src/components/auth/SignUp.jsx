@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import Container from '../Container';
 import Title from '../Title';
@@ -77,6 +78,8 @@ export default function SignUp() {
       name: '', email: '', password: ''
    });
 
+   const navigate = useNavigate();
+
    const handleChange = ({target}) => {
       const {name, value} = target;
       setUserInfo({...userInfo, [name]: value});
@@ -92,7 +95,11 @@ export default function SignUp() {
 
       try {
          const {data} = await axios.post(`${BASE_URL}/auth/sign-up`, userInfo);
-         return data;
+         /*return data;*/
+         navigate("/auth/verify-email", {
+            state: { user: data.user },
+            replace: true,
+         });
       }
       catch (err) {
          const {response} = err;

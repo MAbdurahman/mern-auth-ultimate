@@ -9,7 +9,7 @@ export default function Button({children}) {
    }
 
    return (<button onClick={handleClick}
-                   className="bg-gray-200 hover:bg-gray-300 py-4 px-8 rounded-md border-none uppercase font-bold text-lg text-logo-blue cursor-pointer">
+                   className="dark:bg-gray-300 bg-black dark:text-black text-white hover:bg-gray-700 py-4 px-8 rounded-md border-none uppercase font-bold text-lg text-logo-blue cursor-pointer">
       {children}
    </button>)
 }
