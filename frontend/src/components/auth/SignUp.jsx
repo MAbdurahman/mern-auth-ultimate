@@ -63,10 +63,10 @@ const validateUserInfo = ({name, email, password}) => {
          error: 'Password must include at least one: \'-+_!@#$%^&*?\''
       };
    }
-   if (!password_trimmed.match(password_pattern)) {
+   if (!password_trimmed.match(password_pattern)|| password_trimmed.length >= 33) {
       return {
          isValid: false,
-         error: 'Password must have at least 8 and no more than 32 characters!'
+         error: 'Password must have between 8 and 32 characters!'
       };
    }
 

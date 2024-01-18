@@ -5,10 +5,24 @@ import Title from '../Title';
 import SubmitButton from '../forms/SubmitButton';
 import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
+import axios from 'axios';
 
 
 const OTP_LENGTH = 6;
 let currentOTPIndex;
+
+const isValidOTP = (OTP) => {
+   let isValid = false;
+
+   for (let val of OTP) {
+      isValid = !isNaN(parseInt(val));
+      if (!isValid) {
+         break;
+      }
+   }
+
+   return isValid;
+};
 export default function VerifyEmail() {
    const [OTP, setOTP] = useState(new Array(OTP_LENGTH).fill(""));
    const [activeOTPIndex, setActiveOTPIndex] = useState(0);
@@ -50,20 +64,38 @@ export default function VerifyEmail() {
       }
    };
 
+   const handleSubmit = async e => {
+     e.preventDefault();
+      if (!isValidOTP(OTP)) {
+         return console.log(`OTP is valid is ${isValidOTP(OTP)}`);
+      }
+      console.log(`${OTP}`)
+
+     const BASE_URL = 'http://127.0.0.1:5000/api/v1.0';
+      try {
+         const {data} = await axios.post(`${BASE_URL}/auth/verify-email-token`,)
+
+      }
+      catch (err) {
+
+      }
+
+   };
+
    useEffect(() => {
       inputRef.current?.focus();
    }, [activeOTPIndex]);
 
-   useEffect(() => {
+/*   useEffect(() => {
       if (!user) {
          navigate('/not-found');
       }
-   }, [navigate, user]);
+   }, [navigate, user]);*/
 
    return (
       <FormContainer>
          <Container>
-            <form className={themeFormClasses}>
+            <form onSubmit={handleSubmit} className={themeFormClasses}>
                <section>
                   <Title>Verify Email</Title>
                   <p className="text-center dark:text-dark-subtle text-light-subtle">
