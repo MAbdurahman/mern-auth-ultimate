@@ -6,7 +6,7 @@ import SubmitButton from '../forms/SubmitButton';
 import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
 import axios from 'axios';
-
+import {useNotification} from '../../hooks/notificationHook';
 
 const OTP_LENGTH = 6;
 let currentOTPIndex;
@@ -30,6 +30,7 @@ export default function VerifyEmail() {
    const inputRef = useRef();
 
    const navigate = useNavigate();
+   const {updateNotication} = useNotification();
    const { state } = useLocation();
    const user = state?.user;
 
@@ -76,9 +77,9 @@ export default function VerifyEmail() {
       try {
          const {error, message} = await axios.post(`${BASE_URL}/auth/verify-email-token`, {OTP: OTP.join(""), userId: user.id});
          if (error) {
-            return console.log(error);
+            return updateNotication("error", error);
          }
-         console.log(message)
+         updateNotication("success", message);
 
       }
       catch (err) {

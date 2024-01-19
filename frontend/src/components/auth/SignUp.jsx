@@ -8,6 +8,7 @@ import SubmitButton from '../forms/SubmitButton';
 import CustomLink from '../CustomLink';
 import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
+import {useNotification} from '../../hooks/notificationHook';
 
 const validateUserInfo = ({name, email, password}) => {
    let name_trimmed = name.trim();
@@ -79,6 +80,7 @@ export default function SignUp() {
    });
 
    const navigate = useNavigate();
+   const { updateNotification } = useNotification();
 
    const handleChange = ({target}) => {
       const {name, value} = target;
@@ -90,7 +92,7 @@ export default function SignUp() {
       const BASE_URL = 'http://127.0.0.1:5000/api/v1.0';
 
       if (!isValid) {
-         return console.log(error);
+         return updateNotification("error", error);
       }
 
       try {

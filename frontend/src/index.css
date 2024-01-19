@@ -5,6 +5,9 @@
 @tailwind utilities;
 
 @layer base {
+   body {
+      @apply font-body;
+   }
    h1,
    h2,
    h3,
@@ -195,24 +198,24 @@
       max-width: 1144px;
       margin: 0 auto;
    }
-
-   /*.bounce-custom {
-      animation: bounce-custom 0.5s infinite;
+   .bounce-in-right {
+      /*animation: bounce-in-right 2s ease infinite;*/
+      animation-name: bounce-in-right;
+      animation-duration: 1s;
+      animation-iteration-count: 1;
+      animation-timing-function: ease;
    }
-   @keyframes bounce-custom {
-      from,
-      to {
-         transform: scale(1, 1);
+   @keyframes bounce-in-right {
+      0% {
+         opacity: 0;
+         transform: translateX(2000px);
       }
-      25% {
-         transform: scale(0.9, 1.1);
+      60% {
+         opacity: 1;
+         transform: translateX(-30px);
       }
-      50% {
-         transform: scale(1.1, 0.9);
-      }
-      75% {
-         transform: scale(0.95, 1.05);
-      }
-   }*/
+      80% { transform: translateX(10px); }
+      100% { transform: translateX(0); }
+   }
 
 }
