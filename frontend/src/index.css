@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=DM+Serif+Display&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=PT+Mono&family=PT+Sans:wght@400;700&family=PT+Serif:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,6 +9,7 @@
    body {
       @apply font-body;
    }
+
    h1,
    h2,
    h3,
@@ -91,10 +93,12 @@
       justify-content: center;
       align-items: center;
    }
+
    .grid-center {
       display: grid;
       place-items: center;
    }
+
    .grid-container {
       margin: 3em auto;
       width: 90%;
@@ -103,6 +107,7 @@
       column-gap: 2rem;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
    }
+
    .grid-container-12 {
       /*margin: 3em auto 1em;*/
       margin: 0 auto;
@@ -112,21 +117,25 @@
       column-gap: 2rem;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
    }
+
    .grid-column-1 {
       display: grid;
       grid-template-columns: repeat(1, minmax(0, 1fr));
       column-gap: 2rem;
    }
+
    .grid-column-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: 2rem;
    }
+
    .grid-column-3 {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       column-gap: 2rem;
    }
+
    .grid-column-4 {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -136,19 +145,23 @@
    .min-w-30 {
       min-width: 30rem;
    }
+
    .sub-heading-container {
       width: 80%;
       margin: 0 auto;
    }
+
    .sub-heading {
       margin-bottom: 1em;
       margin-left: 1em;
    }
+
    .row {
       float: left;
       width: 100%;
       padding: 20px 0 50px;
    }
+
    .form-input {
       position: relative;
    }
@@ -157,47 +170,45 @@
       margin: 0 auto;
       max-width: 1200px;
    }
+
    .extra-margin-bottom {
       margin-bottom: 34rem;
       padding-bottom: 34rem;
    }
 
-
-   /* Extra small devices (portrait phones, less than 576px) */
-   @media (max-width: 575px) {
-      .wrapper {
-         max-width: 100%;
-      }
+   /*Extra small devices (portrait phones, less than 576px)*/
+   .wrapper {
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 16px;
+      padding-right: 16px;
    }
-
-   /* Small devices (landscape phones, less than 768px) */
-   @media (max-width: 767px) {
+   /*Small devices (landscape phones, 576px and up)*/
+   @media (min-width: 576px) {
       .wrapper {
          max-width: 544px;
       }
    }
-
-   /* Medium devices (tablets, less than 992px) */
-   @media (max-width: 991px) {
+   /*Medium devices (tablets, 768px and up)*/
+   @media (min-width: 768px) {
       .wrapper {
          max-width: 720px;
       }
    }
-
-   /* Large devices (desktops, less than 1200px) */
-   @media (max-width: 1199px) {
+   /*Large devices (desktops, 992px and up)*/
+   @media (min-width: 992px) {
       .wrapper {
          max-width: 960px;
       }
    }
-
-   /* Extra large devices (large desktops) */
-   /* No media query since the extra-large breakpoint has no upper bound on its width */
-
-   .wrapper {
-      max-width: 1144px;
-      margin: 0 auto;
+   /*Extra large devices (large desktops, 1200px and up)*/
+   @media (min-width: 1200px) {
+      .wrapper {
+         max-width: 1144px;
+      }
    }
+
    .bounce-in-right {
       /*animation: bounce-in-right 2s ease infinite;*/
       animation-name: bounce-in-right;
@@ -205,6 +216,7 @@
       animation-iteration-count: 1;
       animation-timing-function: ease;
    }
+
    @keyframes bounce-in-right {
       0% {
          opacity: 0;
@@ -214,8 +226,12 @@
          opacity: 1;
          transform: translateX(-30px);
       }
-      80% { transform: translateX(10px); }
-      100% { transform: translateX(0); }
+      80% {
+         transform: translateX(10px);
+      }
+      100% {
+         transform: translateX(0);
+      }
    }
 
 }
