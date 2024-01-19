@@ -113,23 +113,23 @@ export default function SignUp() {
    const {name, email, password} = userInfo;
 
    return (<FormContainer>
-         <Container>
-            <form onSubmit={handleSubmit} className={themeFormClasses}>
-               <Title>Sign Up</Title>
-               <FormInput label="Name" value={name} onChange={handleChange}
-                          placeholder="Full name" name="name"/>
-               <FormInput label="Email" value={email} onChange={handleChange}
-                          placeholder="example@email.com" name="email"/>
-               <FormInput label="Password" value={password} type="password"
-                          onChange={handleChange} placeholder="*************"
-                          name="password"/>
-               <SubmitButton value="Sign Up"/>
-               <div className="flex justify-end">
-                  <CustomLink to="/auth/forgot-password">Forgot
-                     Password&nbsp;/</CustomLink>
-                  <CustomLink to="/auth/sign-in">&nbsp;Sign In</CustomLink>
-               </div>
-            </form>
-         </Container>
-      </FormContainer>)
+      <Container>
+         <form onSubmit={handleSubmit} className={themeFormClasses}>
+            <Title>Sign Up</Title>
+            <FormInput label="Name" value={name} onChange={handleChange}
+                       placeholder="Full name" name="name"/>
+            <FormInput label="Email" value={email} onChange={handleChange}
+                       placeholder="example@email.com" name="email"/>
+            <FormInput label="Password" value={password} type="password"
+                       onChange={handleChange} placeholder="*************"
+                       name="password"/>
+            <SubmitButton value="Sign Up"/>
+            <div className="flex justify-end">
+               <CustomLink to="/auth/forgot-password">Forgot
+                  Password&nbsp;/</CustomLink>
+               <CustomLink to="/auth/sign-in">&nbsp;Sign In</CustomLink>
+            </div>
+         </form>
+      </Container>
+   </FormContainer>)
 }

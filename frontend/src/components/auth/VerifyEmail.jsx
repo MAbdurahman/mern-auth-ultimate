@@ -33,6 +33,7 @@ export default function VerifyEmail() {
    const { state } = useLocation();
    const user = state?.user;
 
+
    const focusNextInputField = (index) => {
       setActiveOTPIndex(index + 1);
    };
@@ -73,11 +74,19 @@ export default function VerifyEmail() {
 
      const BASE_URL = 'http://127.0.0.1:5000/api/v1.0';
       try {
-         const {data} = await axios.post(`${BASE_URL}/auth/verify-email-token`,)
+         const {error, message} = await axios.post(`${BASE_URL}/auth/verify-email-token`, {OTP: OTP.join(""), userId: user.id});
+         if (error) {
+            return console.log(error);
+         }
+         console.log(message)
 
       }
       catch (err) {
-
+         const {response} = err;
+         if (response?.data) {
+            return response.data;
+         }
+         return {error: err.message || err};
       }
 
    };
