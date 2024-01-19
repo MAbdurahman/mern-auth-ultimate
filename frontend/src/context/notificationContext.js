@@ -18,7 +18,7 @@ export default function NotificationProvider({ children }) {
             setClasses("bg-green-800");
             break;
          case "warning":
-            setClasses("bg-yellow-400");
+            setClasses("bg-yellow-600");
             break;
          default:
             setClasses("bg-red-800");
@@ -36,7 +36,7 @@ export default function NotificationProvider({ children }) {
          {notification && (<div className="fixed left-1/2 -translate-x-1/2 top-24 ">
             <div
                className="bounce-in-right shadow-md shadow-gray-400 bg-red-800 rounded">
-               <p className={classes + ' text-white px-4 py-2 font-body font-semibold'}>
+               <p className={classes + ' text-gray-300 px-4 py-2 font-body font-semibold'}>
                   {notification}
                </p>
             </div>

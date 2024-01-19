@@ -210,7 +210,6 @@
    }
 
    .bounce-in-right {
-      /*animation: bounce-in-right 2s ease infinite;*/
       animation-name: bounce-in-right;
       animation-duration: 1s;
       animation-iteration-count: 1;
