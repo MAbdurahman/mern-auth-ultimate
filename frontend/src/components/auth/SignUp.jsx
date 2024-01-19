@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import axios from 'axios';
+import {signUpUser} from '../../axiosUtils/axiosUserUtils';
 import Container from '../Container';
 import Title from '../Title';
 import FormInput from '../forms/FormInput';
@@ -89,15 +89,24 @@ export default function SignUp() {
    const handleSubmit = async e => {
       e.preventDefault();
       const {isValid, error} = validateUserInfo(userInfo);
-      const BASE_URL = 'http://127.0.0.1:5000/api/v1.0';
+      /*const BASE_URL = 'http://127.0.0.1:5000/api/v1.0';*/
 
       if (!isValid) {
          return updateNotification("error", error);
       }
 
-      try {
+      const response = await signUpUser(userInfo);
+      if (response.error) {
+         return console.log(response.error);
+      }
+
+      navigate("/auth/verify-email", {
+         state: { user: response.user },
+         replace: true,
+      });
+      /*try {
          const {data} = await axios.post(`${BASE_URL}/auth/sign-up`, userInfo);
-         /*return data;*/
+         /!*return data;*!/
          navigate("/auth/verify-email", {
             state: { user: data.user },
             replace: true,
@@ -109,7 +118,7 @@ export default function SignUp() {
             return response.data;
          }
          return {error: err.message || err};
-      }
+      }*/
    }
 
    const {name, email, password} = userInfo;

@@ -6,20 +6,18 @@ const userModel = new mongoose.Schema({
    name: {
       type: String,
       trim: true,
-      required: [true, 'Please enter your first and last name!'],
-      maxLength: [32, 'Name cannot exceed 32 characters!']
+      required: true
    },
    email: {
       type: String,
       trim: true,
-      required: [true, 'Please enter your email!'],
-      unique: [true, 'Email already exists!']
+      required: true,
+      unique: true
 
    },
    password: {
       type: String,
-      required: [true, 'Please enter your password!'],
-      minlength: [8, 'Password must be at least 8 characters!']
+      required: true
    },
    isVerified: {
       type: Boolean,

@@ -5,7 +5,7 @@ import Title from '../Title';
 import SubmitButton from '../forms/SubmitButton';
 import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
-import axios from 'axios';
+import {verifyEmailTokenUser} from '../../axiosUtils/axiosUserUtils';
 import {useNotification} from '../../hooks/notificationHook';
 
 const OTP_LENGTH = 6;
@@ -30,7 +30,7 @@ export default function VerifyEmail() {
    const inputRef = useRef();
 
    const navigate = useNavigate();
-   const {updateNotication} = useNotification();
+   const {updateNotification} = useNotification();
    const { state } = useLocation();
    const user = state?.user;
 
@@ -73,22 +73,16 @@ export default function VerifyEmail() {
       }
       console.log(`${OTP}`)
 
-     const BASE_URL = 'http://127.0.0.1:5000/api/v1.0';
-      try {
-         const {error, message} = await axios.post(`${BASE_URL}/auth/verify-email-token`, {OTP: OTP.join(""), userId: user.id});
-         if (error) {
-            return updateNotication("error", error);
-         }
-         updateNotication("success", message);
+      const { error, message } = await verifyEmailTokenUser({
+         OTP: OTP.join(""),
+         userId: user.id,
+      });
 
+      if (error) {
+         return updateNotification('error', error);
       }
-      catch (err) {
-         const {response} = err;
-         if (response?.data) {
-            return response.data;
-         }
-         return {error: err.message || err};
-      }
+
+      updateNotification("success", message);
 
    };
 
@@ -96,11 +90,11 @@ export default function VerifyEmail() {
       inputRef.current?.focus();
    }, [activeOTPIndex]);
 
-/*   useEffect(() => {
+   useEffect(() => {
       if (!user) {
          navigate('/not-found');
       }
-   }, [navigate, user]);*/
+   }, [navigate, user]);
 
    return (
       <FormContainer>
