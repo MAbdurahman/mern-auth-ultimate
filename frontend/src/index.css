@@ -209,14 +209,22 @@
       }
    }
 
-   .bounce-in-right {
-      animation-name: bounce-in-right;
+   .move-in-from-right {
+      animation-name: move-in-from-right;
       animation-duration: 1s;
       animation-iteration-count: 1;
       animation-timing-function: ease;
    }
 
-   @keyframes bounce-in-right {
+   .exit-to-left {
+      animation-name: exit-to-left;
+      animation-duration: 1s;
+      animation-iteration-count: 1;
+      animation-timing-function: ease;
+      animation-fill-mode: forwards;
+   }
+
+   @keyframes move-in-from-right {
       0% {
          opacity: 0;
          transform: translateX(2000px);
@@ -230,6 +238,19 @@
       }
       100% {
          transform: translateX(0);
+      }
+   }
+
+   @keyframes exit-to-left {
+      0% {
+         opacity: 1;
+         transform: translateX(0);
+      }
+      50% {
+         transform: translateX(50px);
+      }
+      100% {
+         transform: translateX(-2000px);
       }
    }
 

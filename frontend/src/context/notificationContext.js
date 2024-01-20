@@ -1,13 +1,17 @@
-import React, { useState, createContext } from "react";
+import React, { useState, useRef, createContext } from "react";
 
 export const NotificationContext = createContext();
-let timeoutID;
+let timeoutID1;
+let timeoutID2;
 export default function NotificationProvider({ children }) {
    const [notification, setNotification] = useState("");
    const [classes, setClasses] = useState("");
+   const notificationRef = useRef();
    const updateNotification = (type, value) => {
-      if (timeoutID) {
-         clearTimeout(timeoutID);
+
+      if (timeoutID1) {
+         clearTimeout(timeoutID1);
+         clearTimeout(timeoutID2);
       }
 
       switch (type) {
@@ -25,8 +29,14 @@ export default function NotificationProvider({ children }) {
       }
       setNotification(value);
 
-      timeoutID = setTimeout(() => {
-         setNotification("");
+      timeoutID1 = setTimeout(() => {
+         notificationRef.current.classList.remove('move-in-from-right');
+         notificationRef.current.classList.add('exit-to-left');
+
+         timeoutID2 = setTimeout(() => {
+            setNotification("");
+         }, 1500);
+
       }, 3500);
    };
 
@@ -34,8 +44,8 @@ export default function NotificationProvider({ children }) {
       <NotificationContext.Provider value={{updateNotification}}>
          {children}
          {notification && (<div className="fixed left-1/2 -translate-x-1/2 top-24 ">
-            <div
-               className="bounce-in-right shadow-md shadow-gray-400 bg-red-800 rounded">
+            <div ref={notificationRef}
+               className="move-in-from-right shadow-md shadow-gray-400 bg-red-800 rounded">
                <p className={classes + ' text-gray-300 px-4 py-2 font-body font-semibold'}>
                   {notification}
                </p>

@@ -28,7 +28,7 @@ export default function VerifyEmail() {
    const [activeOTPIndex, setActiveOTPIndex] = useState(0);
 
    const inputRef = useRef();
-
+   // eslint-disable-next-line
    const navigate = useNavigate();
    const {updateNotification} = useNotification();
    const { state } = useLocation();
@@ -90,11 +90,11 @@ export default function VerifyEmail() {
       inputRef.current?.focus();
    }, [activeOTPIndex]);
 
-   useEffect(() => {
+/*   useEffect(() => {
       if (!user) {
          navigate('/not-found');
       }
-   }, [navigate, user]);
+   }, [navigate, user]);*/
 
    return (
       <FormContainer>
