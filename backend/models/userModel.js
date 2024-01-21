@@ -3,10 +3,13 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
 const userModel = new mongoose.Schema({
-   name: {
+   username: {
       type: String,
       trim: true,
-      required: true
+      required: true,
+      unique: false,
+      maxLength: [32, "Name cannot exceed 32 characters!"],
+      minLength: [3, "Name should have more than 3 characters!"],
    },
    email: {
       type: String,
@@ -17,7 +20,8 @@ const userModel = new mongoose.Schema({
    },
    password: {
       type: String,
-      required: true
+      required: true,
+      minLength: [8, "Name should have at least 8 characters!"],
    },
    isVerified: {
       type: Boolean,

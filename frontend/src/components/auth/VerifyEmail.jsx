@@ -90,11 +90,11 @@ export default function VerifyEmail() {
       inputRef.current?.focus();
    }, [activeOTPIndex]);
 
-/*   useEffect(() => {
+   useEffect(() => {
       if (!user) {
          navigate('/not-found');
       }
-   }, [navigate, user]);*/
+   }, [navigate, user]);
 
    return (
       <FormContainer>

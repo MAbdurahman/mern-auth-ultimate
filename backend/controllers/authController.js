@@ -3,15 +3,19 @@ import jwt from 'jsonwebtoken';
 import User from '../models/userModel.js';
 import EmailVerificationToken from '../models/emailVerificationTokenModel.js';
 import PasswordResetToken from '../models/passwordResetTokenModel.js';
-import { isValidObjectId } from 'mongoose';
-import { generateOTPCode, generateMailTransporter, generateRandomByte } from '../utils/mailHandlers.js';
+import {isValidObjectId} from 'mongoose';
+import {
+   generateOTPCode,
+   generateMailTransporter,
+   generateRandomByte
+} from '../utils/mailHandlers.js';
 import ErrorHandler from '../utils/errorHandler.js';
 
 export const signUp = async (req, res, next) => {
-   const {name, email, password} = req.body;
+   const {username, email, password} = req.body;
 
-   if (!name) {
-      return next(new ErrorHandler('Please enter name!', 400));
+   if (!username) {
+      return next(new ErrorHandler('Please enter username!', 400));
    }
    if (!email) {
       return next(new ErrorHandler('Please enter email!', 400));
@@ -21,12 +25,13 @@ export const signUp = async (req, res, next) => {
    }
 
    const existingUser = await User.findOne({email});
+
    if (existingUser) {
       return next(new ErrorHandler('Email already exists!', 400));
 
    }
 
-   const newUser = new User({name, email, password});
+   const newUser = new User({username, email, password});
    await newUser.save();
 
    /**************** generate 6 digit OTP****************/
@@ -34,8 +39,7 @@ export const signUp = async (req, res, next) => {
 
    /**************** store OTP in database ****************/
    const newEmailVerificationToken = new EmailVerificationToken({
-      owner: newUser._id,
-      token: OTP
+      owner: newUser._id, token: OTP
    });
    await newEmailVerificationToken.save();
 
@@ -55,12 +59,9 @@ export const signUp = async (req, res, next) => {
 
    res.status(201).json({
       user: {
-         id: newUser._id,
-         name: newUser.name,
-         email: newUser.email,
+         id: newUser._id, username: newUser.username, email: newUser.email,
       },
    });
-
 };
 
 export const signIn = async (req, res, next) => {
@@ -73,7 +74,7 @@ export const signIn = async (req, res, next) => {
       return next(new ErrorHandler('Please enter password!', 400));
    }
    /**************** finding user in database ****************/
-   const user = await User.findOne({ email });
+   const user = await User.findOne({email});
    if (!user) {
       return next(new ErrorHandler('Invalid email or password!', 401));
    }
@@ -83,11 +84,11 @@ export const signIn = async (req, res, next) => {
    if (!isMatchedPasswords) {
       return next(new ErrorHandler('Invalid Email or Password', 401));
    }
-   const {_id, name} = user;
-   const jwtToken = jwt.sign({ userId: _id }, process.env.JWT_SECRET_KEY, {expiresIn: process.env.JWT_EXPIRES_TIME});
+   const {_id, username} = user;
+   const jwtToken = jwt.sign({userId: _id}, process.env.JWT_SECRET_KEY, {expiresIn: process.env.JWT_EXPIRES_TIME});
 
    await res.status(201).json({
-      user: { id: _id, name, email, token: jwtToken }
+      user: {id: _id, username, email, token: jwtToken}
    });
 };
 
@@ -159,7 +160,7 @@ export const resendEmailVerificationToken = async (req, res, next) => {
       return next(new ErrorHandler('User not found!', 404));
    }
 
-   if (user.isVerified){
+   if (user.isVerified) {
       /*return res.json({error: 'Email already verified!'});*/
       return next(new ErrorHandler('Email already verified!', 400));
    }
@@ -176,8 +177,7 @@ export const resendEmailVerificationToken = async (req, res, next) => {
 
    /**************** store OTP in database ****************/
    const newEmailVerification = new EmailVerificationToken({
-      owner: user._id,
-      token: OTP
+      owner: user._id, token: OTP
    })
    await newEmailVerification.save()
 
@@ -201,26 +201,25 @@ export const resendEmailVerificationToken = async (req, res, next) => {
 };
 
 export const forgotPassword = async (req, res, next) => {
-   const { email } = req.body;
+   const {email} = req.body;
 
    if (!email) {
       return next(new ErrorHandler('Email is required!'), 400);
    }
 
-   const user = await User.findOne({ email });
+   const user = await User.findOne({email});
    if (!user) {
       return next(new ErrorHandler('User not found!', 404));
    }
 
-   const alreadyHasToken = await PasswordResetToken.findOne({ owner: user._id });
+   const alreadyHasToken = await PasswordResetToken.findOne({owner: user._id});
    if (alreadyHasToken) {
       return next(new ErrorHandler('Token already exists! After an hour, request another token!', 400));
    }
 
    const token = await generateRandomByte();
    const newPasswordResetToken = await PasswordResetToken({
-      owner: user._id,
-      token,
+      owner: user._id, token,
    });
    await newPasswordResetToken.save();
 
@@ -229,9 +228,9 @@ export const forgotPassword = async (req, res, next) => {
    const transport = generateMailTransporter();
 
    transport.sendMail({
-      from: "security@mern_auth_ultimate.com",
+      from: 'security@mern_auth_ultimate.com',
       to: user.email,
-      subject: "Reset Password",
+      subject: 'Reset Password',
       html: `
       <h1>Click the link below to your reset password</h1>
       <p>
@@ -239,16 +238,16 @@ export const forgotPassword = async (req, res, next) => {
       </p> 
     `,
    });
-   res.json({ message: `A link was sent to your email at ${user.email}.` });
+   res.json({message: `A link was sent to your email at ${user.email}.`});
 
 };
 
 export const verifyPasswordResetToken = async (req, res) => {
-   await res.status(201).json({ valid: true });
+   await res.status(201).json({valid: true});
 };
 
 export const resetPassword = async (req, res, next) => {
-   const { newPassword, userId } = req.body;
+   const {newPassword, userId} = req.body;
 
    const user = await User.findById(userId);
    const matched = await user.comparePassword(newPassword);
@@ -263,9 +262,9 @@ export const resetPassword = async (req, res, next) => {
 
    const transport = generateMailTransporter();
    transport.sendMail({
-      from: "security@mern_auth_ultimate.com",
+      from: 'security@mern_auth_ultimate.com',
       to: user.email,
-      subject: "Password Reset Successfully",
+      subject: 'Password Reset Successfully',
       html: `
       <h1>Password Reset Successfully</h1>
       <p>Your password was successfully reset.</p>
@@ -274,7 +273,7 @@ export const resetPassword = async (req, res, next) => {
    });
 
    res.status(201).json({
-      message: "Password reset successfully!"
+      message: 'Password reset successfully!'
    });
 };
 

@@ -10,8 +10,8 @@ import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
 import {useNotification} from '../../hooks/notificationHook';
 
-const validateUserInfo = ({name, email, password}) => {
-   let name_trimmed = name.trim();
+const validateUserInfo = ({username, email, password}) => {
+   let name_trimmed = username.trim();
    let email_trimmed = email.trim();
    let password_trimmed = password.trim();
 
@@ -76,7 +76,7 @@ const validateUserInfo = ({name, email, password}) => {
 
 export default function SignUp() {
    const [userInfo, setUserInfo] = useState({
-      name: '', email: '', password: ''
+      username: '', email: '', password: ''
    });
 
    const navigate = useNavigate();
@@ -121,14 +121,14 @@ export default function SignUp() {
       }*/
    }
 
-   const {name, email, password} = userInfo;
+   const {username, email, password} = userInfo;
 
    return (<FormContainer>
       <Container>
          <form onSubmit={handleSubmit} className={themeFormClasses}>
             <Title>Sign Up</Title>
-            <FormInput label="Name" value={name} onChange={handleChange}
-                       placeholder="Full name" name="name"/>
+            <FormInput label="Name" value={username} onChange={handleChange}
+                       placeholder="Full name" name="username"/>
             <FormInput label="Email" value={email} onChange={handleChange}
                        placeholder="example@email.com" name="email"/>
             <FormInput label="Password" value={password} type="password"

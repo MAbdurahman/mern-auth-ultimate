@@ -1,14 +1,14 @@
 import {check, validationResult} from 'express-validator';
 
 export const validateSignUp = [
-   check('name').trim().not().isEmpty().withMessage('Please enter your first and last name!'),
+   check('username').trim().not().isEmpty().withMessage('Please enter your first and last name!'),
    check('email').normalizeEmail().isEmail().withMessage('Valid email is required!'),
    check('password')
       .trim()
       .not()
       .isEmpty()
       .withMessage('Password is required!')
-      .isLength({min: 8, max: 32})
+      .isLength({min: 8})
       .withMessage('Password must have between 8 to 32 characters!')
 ];
 
@@ -23,7 +23,7 @@ export const validatePassword = [
       .not()
       .isEmpty()
       .withMessage('Password is required!')
-      .isLength({min: 8, max: 32})
+      .isLength({min: 8})
       .withMessage('Password must have between 8 to 32 characters!')
 ];
 
