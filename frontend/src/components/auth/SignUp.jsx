@@ -104,21 +104,7 @@ export default function SignUp() {
          state: { user: response.user },
          replace: true,
       });
-      /*try {
-         const {data} = await axios.post(`${BASE_URL}/auth/sign-up`, userInfo);
-         /!*return data;*!/
-         navigate("/auth/verify-email", {
-            state: { user: data.user },
-            replace: true,
-         });
-      }
-      catch (err) {
-         const {response} = err;
-         if (response?.data) {
-            return response.data;
-         }
-         return {error: err.message || err};
-      }*/
+
    }
 
    const {username, email, password} = userInfo;

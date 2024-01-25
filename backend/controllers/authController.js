@@ -147,8 +147,12 @@ export const verifyEmailToken = async (req, res, next) => {
 `
    })
 
-   res.json({message: 'Your email has been verified.'})
-
+   const {username, email} = user;
+   const jwtToken = jwt.sign({userId: _id}, process.env.JWT_SECRET_KEY);
+   res.json({
+      user: { id: user._id, username, email, token: jwtToken },
+      message: 'Your email has been verified.',
+   });
 };
 
 export const resendEmailVerificationToken = async (req, res, next) => {

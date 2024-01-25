@@ -36,9 +36,7 @@ export default function ForgotPassword() {
       if(!isValid) {
          return updateNotification("error", error);
       }
-      setTimeout(() => {
-         document.getElementById("email").value = "";
-      }, 3500)
+
 
       return updateNotification("success", "Successfully sent email.");
 

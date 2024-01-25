@@ -1,14 +1,16 @@
-import React, { useState, useRef, createContext } from "react";
+import React, {useState, useRef, createContext} from 'react';
 
 export const NotificationContext = createContext();
 let timeoutID1;
 let timeoutID2;
 export default function NotificationProvider({ children }) {
+
    const [notification, setNotification] = useState("");
    const [classes, setClasses] = useState("");
    const notificationRef = useRef();
-   const updateNotification = (type, value) => {
 
+
+   const updateNotification = (type, value) => {
       if (timeoutID1) {
          clearTimeout(timeoutID1);
          clearTimeout(timeoutID2);
@@ -30,7 +32,9 @@ export default function NotificationProvider({ children }) {
       setNotification(value);
 
       timeoutID1 = setTimeout(() => {
-         notificationRef.current.classList.remove('move-in-from-right');
+         if (notificationRef.current.classList) {
+            notificationRef.current.classList.remove('move-in-from-right');
+         }
          notificationRef.current.classList.add('exit-to-left');
 
          timeoutID2 = setTimeout(() => {
@@ -39,6 +43,7 @@ export default function NotificationProvider({ children }) {
 
       }, 3500);
    };
+
 
    return (
       <NotificationContext.Provider value={{updateNotification}}>

@@ -5,13 +5,16 @@ import App from './app/App';
 import {BrowserRouter} from 'react-router-dom';
 import ThemeProvider from './context/themeContext';
 import NotificationProvider from './context/notificationContext';
+import AuthProvider from './context/authContext';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<BrowserRouter>
    <NotificationProvider>
-      <ThemeProvider>
-         <App/>
-      </ThemeProvider>
+      <AuthProvider>
+         <ThemeProvider>
+            <App/>
+         </ThemeProvider>
+      </AuthProvider>
    </NotificationProvider>
 </BrowserRouter>);
