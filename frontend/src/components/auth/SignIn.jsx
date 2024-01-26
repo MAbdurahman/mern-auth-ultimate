@@ -9,7 +9,6 @@ import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
 import {useNotification} from '../../hooks/notificationHook';
 import {useAuth} from '../../hooks/authHook';
-import {signUpUser} from '../../axiosUtils/axiosUserUtils';
 
 const validateUserInfo = ({email, password}) => {
 
@@ -71,6 +70,7 @@ export default function SignIn() {
    });
    const {updateNotification} = useNotification();
    const {handleLogin, authInfo} = useAuth();
+   const {isPending} = authInfo;
 
    const handleChange = ({target}) => {
       const {value, name} = target;
@@ -80,7 +80,6 @@ export default function SignIn() {
    const handleSubmit = async e => {
       e.preventDefault();
       const {isValid, error} = validateUserInfo(userInfo);
-      /*const BASE_URL = 'http://127.0.0.1:5000/api/v1.0';*/
 
       if (!isValid) {
          return updateNotification('error', error);
@@ -99,7 +98,7 @@ export default function SignIn() {
             <FormInput label="Password" placeholder="*************"
                        onChange={handleChange} value={userInfo.password}
                        name="password" type="password"/>
-            <SubmitButton value="Sign In"/>
+            <SubmitButton value="Sign In" busy={isPending} />
             <div className="flex justify-end">
                <CustomLink to="/auth/forgot-password">Forgot
                   Password&nbsp;/</CustomLink>

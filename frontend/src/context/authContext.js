@@ -40,19 +40,19 @@ export default function AuthProvider({ children }) {
          return;
       }
 
-      setAuthInfo({...authInfo, isPending: true});
-      const {error, user} = await getIsAuthorizedUser(token);
+      setAuthInfo({...authInfo, isPending: false});
+      /*const {error, user} = await getIsAuthorizedUser(token);
       if (error) {
          updateNotification("error", error);
          return setAuthInfo({...authInfo, isPending: false, error});
-      }
+      }*/
 
-      setAuthInfo({
+      /*setAuthInfo({
          profile: {...user},
          isLoggedIn: true,
          isPending: false,
          error: "",
-      });
+      });*/
    };
 
    const handleLogout = () => {
