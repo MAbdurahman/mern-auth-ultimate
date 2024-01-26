@@ -3,6 +3,7 @@ import React, { createContext, useEffect, useState } from "react";
 import {getIsAuthorizedUser, signInUser} from '../axiosUtils/axiosUserUtils';
 import {useNotification} from '../hooks/notificationHook';
 
+
 export const AuthContext = createContext();
 
 const defaultAuthInfo = {
