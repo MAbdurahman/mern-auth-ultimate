@@ -40,7 +40,7 @@ export default function Navbar() {
                      </li>
                      {isLoggedIn ? (<button onClick={handleLogout}
                                             className="font-body tracking-wider uppercase text-white font-semibold text-lg cursor-pointer ">
-                        Log out
+                        Sign out
                      </button>) : (<Link to="/auth/sign-in">
                         <li
                            className="font-body tracking-wider uppercase text-white font-semibold text-lg cursor-pointer">Sign
