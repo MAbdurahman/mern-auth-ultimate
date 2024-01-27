@@ -50,7 +50,22 @@ export const signInUser = async (userInfo) => {
 };
 
 export const getIsAuthorizedUser = async (token) => {
-   await console.log('getIsAuthorizedUser', token);
+   try {
+      const { data } = await axiosCreate.get('/auth/is-authorized', {
+         headers: {
+            Authorization: "Bearer " + token,
+            accept: "application/json",
+         },
+      });
+      return data;
+   } catch (err) {
+      const { response } = err;
+      if (response?.data) {
+         return response.data;
+      }
+
+      return { error: err.message || err };
+   }
 
 };
 

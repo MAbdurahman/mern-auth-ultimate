@@ -8,17 +8,19 @@ import {
    resendEmailVerificationToken,
    forgotPassword,
    verifyPasswordResetToken,
-   resetPassword
+   resetPassword,
+   isAuthorized
 } from '../controllers/authController.js';
 import {
    validateSignUp,
    validatePassword,
    validateSignIn,
-   executeValidator
+   executeValidator,
 } from '../middlewares/validateHandlerMiddleware.js';
 import {
    validatePasswordResetToken
 } from '../middlewares/passwordResetHandlerMiddleware.js';
+import { authenticateUser} from '../middlewares/authenticationMiddleware.js';
 
 const router = express.Router();
 
@@ -30,6 +32,7 @@ router.post('/forgot-password', forgotPassword);
 router.post('/verify-password-reset-token', validatePasswordResetToken, verifyPasswordResetToken);
 router.post('/reset-password', validatePassword, executeValidator, validatePasswordResetToken, resetPassword);
 router.post('/sign-in', validateSignIn, executeValidator, signIn);
+router.get('/is-authorized', authenticateUser, isAuthorized)
 router.get('/sign-out', signOut);
 
 export default router;

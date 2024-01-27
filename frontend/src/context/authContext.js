@@ -41,11 +41,11 @@ export default function AuthProvider({ children }) {
       }
 
       setAuthInfo({...authInfo, isPending: false});
-      /*const {error, user} = await getIsAuthorizedUser(token);
+      const {error, user} = await getIsAuthorizedUser(token);
       if (error) {
          updateNotification("error", error);
          return setAuthInfo({...authInfo, isPending: false, error});
-      }*/
+      }
 
       /*setAuthInfo({
          profile: {...user},

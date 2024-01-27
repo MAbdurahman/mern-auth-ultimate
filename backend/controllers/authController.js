@@ -284,3 +284,10 @@ export const resetPassword = async (req, res, next) => {
 export const handleNotFound = (req, res, next) => {
    return next(new ErrorHandler('Resource Not Found!', 404));
 };
+
+export const isAuthorized = async (req, res, next) => {
+   const { user } = req;
+   /*const {username, email} = user;*/
+
+   await res.json({ user: { id: user._id, username: user.username, email: user.email } });
+};
