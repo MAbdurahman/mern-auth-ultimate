@@ -7,6 +7,7 @@ import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
 import {verifyEmailTokenUser} from '../../axiosUtils/axiosUserUtils';
 import {useNotification} from '../../hooks/notificationHook';
+import {useAuth} from '../../hooks/authHook';
 
 const OTP_LENGTH = 6;
 let currentOTPIndex;
@@ -26,6 +27,9 @@ const isValidOTP = (OTP) => {
 export default function VerifyEmail() {
    const [OTP, setOTP] = useState(new Array(OTP_LENGTH).fill(""));
    const [activeOTPIndex, setActiveOTPIndex] = useState(0);
+
+   const { isAuth, authInfo } = useAuth();
+   const { isLoggedIn } = authInfo;
 
    const inputRef = useRef();
    // eslint-disable-next-line
@@ -73,7 +77,7 @@ export default function VerifyEmail() {
          return updateNotification('error', 'OTP code invalid!')
       }
 
-      const { error, message } = await verifyEmailTokenUser({
+      const { error, message, user: userResponse, } = await verifyEmailTokenUser({
          OTP: OTP.join(""),
          userId: user.id,
       });
@@ -83,7 +87,8 @@ export default function VerifyEmail() {
       }
 
       updateNotification("success", message);
-
+      localStorage.setItem("auth-token", userResponse.token);
+      isAuth();
    };
 
    useEffect(() => {
@@ -94,7 +99,10 @@ export default function VerifyEmail() {
       if (!user) {
          navigate('/not-found');
       }
-   }, [navigate, user]);
+      if (isLoggedIn) {
+         navigate('/');
+      }
+   }, [navigate, user, isLoggedIn]);
 
    return (
       <FormContainer>

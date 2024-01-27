@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-
+import React, {useState, useEffect} from 'react';
+import { useNavigate } from "react-router-dom";
 import Container from '../Container';
 import Title from '../Title';
 import FormInput from '../forms/FormInput';
@@ -68,13 +68,13 @@ export default function SignIn() {
    const [userInfo, setUserInfo] = useState({
       email: '', password: '',
    });
+   const navigate = useNavigate();
    const {updateNotification} = useNotification();
    const {handleLogin, authInfo} = useAuth();
-   const {isPending} = authInfo;
+   const {isPending, isLoggedIn} = authInfo;
 
    const handleChange = ({target}) => {
       const {value, name} = target;
-      console.log(name);
       setUserInfo({...userInfo, [name]: value});
    };
    const handleSubmit = async e => {
@@ -88,6 +88,13 @@ export default function SignIn() {
       handleLogin(userInfo.email, userInfo.password);
 
    }
+
+   useEffect(() => {
+      // we want to move our user to somewhere else
+      if (isLoggedIn) {
+         navigate('/');
+      }
+   }, [isLoggedIn, navigate]);
 
    return (<FormContainer>
       <Container>

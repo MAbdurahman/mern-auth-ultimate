@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {signUpUser} from '../../axiosUtils/axiosUserUtils';
 import Container from '../Container';
@@ -9,6 +9,7 @@ import CustomLink from '../CustomLink';
 import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
 import {useNotification} from '../../hooks/notificationHook';
+import {useAuth} from '../../hooks/authHook';
 
 const validateUserInfo = ({username, email, password}) => {
    let name_trimmed = username.trim();
@@ -81,6 +82,8 @@ export default function SignUp() {
 
    const navigate = useNavigate();
    const { updateNotification } = useNotification();
+   const { authInfo } = useAuth();
+   const { isLoggedIn } = authInfo;
 
    const handleChange = ({target}) => {
       const {name, value} = target;
@@ -107,7 +110,16 @@ export default function SignUp() {
 
    }
 
+   useEffect(() => {
+      // we want to move our user to somewhere else
+      if (isLoggedIn) {
+         navigate('/');
+      }
+   }, [isLoggedIn, navigate]);
+
    const {username, email, password} = userInfo;
+
+
 
    return (<FormContainer>
       <Container>

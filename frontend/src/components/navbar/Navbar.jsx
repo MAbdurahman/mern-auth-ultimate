@@ -2,13 +2,15 @@ import {BsFillSunFill} from 'react-icons/bs';
 import Container from '../Container';
 import {Link} from 'react-router-dom';
 import {useTheme} from '../../hooks/themeHook';
+import {useAuth} from '../../hooks/authHook';
 import logo from '../../img/logo.png'
 
 export default function Navbar() {
-   const { toggleTheme } = useTheme();
+   const {toggleTheme} = useTheme();
+   const {authInfo, handleLogout} = useAuth();
+   const {isLoggedIn} = authInfo;
 
-   return (
-      <div
+   return (<div
          className="bg-secondary shadow-sm shadow-gray-500 fixed z-20 w-full top-0 left-0">
          <Container className="p-2">
             <div className="max-w-screen-xl mx-auto p-2">
@@ -24,7 +26,8 @@ export default function Navbar() {
                   </Link>
                   <ul className="flex items-center space-x-4">
                      <li>
-                        <button onClick={toggleTheme} className="dark:bg-white bg-dark-subtle p-1 rounded">
+                        <button onClick={toggleTheme}
+                                className="dark:bg-white bg-dark-subtle p-1 rounded">
                            <BsFillSunFill className="text-secondary" size={24}/>
                         </button>
                      </li>
@@ -35,17 +38,19 @@ export default function Navbar() {
                            placeholder="search..."
                         />
                      </li>
-                     <Link to="/auth/sign-in" >
+                     {isLoggedIn ? (<button onClick={handleLogout}
+                                            className="font-body tracking-wider uppercase text-white font-semibold text-lg cursor-pointer ">
+                        Log out
+                     </button>) : (<Link to="/auth/sign-in">
                         <li
                            className="font-body tracking-wider uppercase text-white font-semibold text-lg cursor-pointer">Sign
                            In
                         </li>
-                     </Link>
+                     </Link>)}
 
                   </ul>
                </div>
             </div>
          </Container>
-      </div>
-   );
+      </div>);
 }

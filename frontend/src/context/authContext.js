@@ -47,12 +47,12 @@ export default function AuthProvider({ children }) {
          return setAuthInfo({...authInfo, isPending: false, error});
       }
 
-      /*setAuthInfo({
+      setAuthInfo({
          profile: {...user},
          isLoggedIn: true,
          isPending: false,
          error: "",
-      });*/
+      });
    };
 
    const handleLogout = () => {
@@ -61,6 +61,7 @@ export default function AuthProvider({ children }) {
    };
 
    useEffect(() => {
+      // eslint-disable-next-line
       isAuth();
    }, []);
 
