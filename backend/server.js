@@ -8,12 +8,10 @@ import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import connectDatabase from './config/configDatabase.js';
 import Template from "./template.js";
-import {errorsHandlerMiddleware} from './middlewares/errorsHandlerMiddleware.js';
 import {errorMiddlewareHandler} from './middlewares/errorMiddleware.js';
 import {handleNotFound} from './controllers/authController.js';
 
 import authRoutes from './routes/authRoutes.js';
-import ErrorHandler from './utils/errorHandler.js';
 
 //**************** configuration setup ****************//
 dotenv.config({path: 'backend/config/config.env'});
@@ -54,23 +52,4 @@ if (process.env.NODE_ENV === 'PRODUCTION') {
     })
 }
 //**************** handle errors middleware ****************//
-/*app.use(errorsHandlerMiddleware);*/
 app.use(errorMiddlewareHandler);
-
-/*app.use((err, req, res, next) => {
-    const statusCode = err.statusCode || 500;
-    const message = err.message || 'Internal Server Error';
-    return res.status(statusCode).json({
-        success: false, statusCode, message,
-    });
-});*/
-
-//**************** handling unhandled promise rejection ****************//
-/*
-process.on('unhandledRejection', err => {
-    console.log(`ERROR: ${err.stack}`);
-    console.log('Shutting down the server due to Unhandled Promise Rejection!');
-    server.close(() => {
-        process.exit(1);
-    });
-});*/
