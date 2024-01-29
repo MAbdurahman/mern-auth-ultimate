@@ -32,7 +32,6 @@ export default function VerifyEmail() {
    const { isLoggedIn } = authInfo;
 
    const inputRef = useRef();
-   // eslint-disable-next-line
    const navigate = useNavigate();
    const {updateNotification} = useNotification();
    const { state } = useLocation();
@@ -73,7 +72,6 @@ export default function VerifyEmail() {
    const handleSubmit = async e => {
      e.preventDefault();
       if (!isValidOTP(OTP)) {
-         /*return console.log(`OTP inValid!`);*/
          return updateNotification('error', 'OTP code invalid!')
       }
 

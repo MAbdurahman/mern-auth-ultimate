@@ -42,7 +42,6 @@ export default function NotificationProvider({ children }) {
       }, 3500);
    };
 
-
    return (
       <NotificationContext.Provider value={{updateNotification}}>
          {children}

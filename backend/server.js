@@ -9,6 +9,7 @@ import morgan from 'morgan';
 import connectDatabase from './config/configDatabase.js';
 import Template from "./template.js";
 import {errorsHandlerMiddleware} from './middlewares/errorsHandlerMiddleware.js';
+import {errorMiddlewareHandler} from './middlewares/errorMiddleware.js';
 import {handleNotFound} from './controllers/authController.js';
 
 import authRoutes from './routes/authRoutes.js';
@@ -53,7 +54,8 @@ if (process.env.NODE_ENV === 'PRODUCTION') {
     })
 }
 //**************** handle errors middleware ****************//
-app.use(errorsHandlerMiddleware);
+/*app.use(errorsHandlerMiddleware);*/
+app.use(errorMiddlewareHandler);
 
 /*app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500;

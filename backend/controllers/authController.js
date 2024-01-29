@@ -10,24 +10,29 @@ import {
    generateRandomByte
 } from '../utils/mailHandlers.js';
 import ErrorHandler from '../utils/errorHandler.js';
+import {errorMessageHandler} from '../utils/errorMessageUtils.js';
 
 export const signUp = async (req, res, next) => {
    const {username, email, password} = req.body;
 
    if (!username) {
-      return next(new ErrorHandler('Please enter username!', 400));
+      /*return next(new ErrorHandler('Please enter username!', 400));*/
+      return errorMessageHandler(res, 'Please enter username!', 400);
    }
    if (!email) {
-      return next(new ErrorHandler('Please enter email!', 400));
+      /*return next(new ErrorHandler('Please enter email!', 400));*/
+      return errorMessageHandler(res, 'Please enter email!', 400);
    }
    if (!password) {
-      return next(new ErrorHandler('Please enter password!', 400));
+      /*return next(new ErrorHandler('Please enter password!', 400));*/
+      return errorMessageHandler(res, 'Please enter password!', 400);
    }
 
    const existingUser = await User.findOne({email});
 
    if (existingUser) {
-      return next(new ErrorHandler('Email already exists!', 400));
+      /*return next(new ErrorHandler('Email already exists!', 400));*/
+      return errorMessageHandler(res, 'Email already exists!', 400);
 
    }
 
@@ -68,21 +73,25 @@ export const signIn = async (req, res, next) => {
    const {email, password} = req.body;
    /**************** check if email and password is entered by user****************/
    if (!email) {
-      return next(new ErrorHandler('Please enter email!', 400));
+      /*return next(new ErrorHandler('Please enter email!', 400));*/
+      return errorMessageHandler(res, 'Please enter email!', 400);
    }
    if (!password) {
-      return next(new ErrorHandler('Please enter password!', 400));
+      /*return next(new ErrorHandler('Please enter password!', 400));*/
+      return errorMessageHandler(res, 'Please enter password!', 400);
    }
    /**************** finding user in database ****************/
    const user = await User.findOne({email});
    if (!user) {
-      return next(new ErrorHandler('Invalid email or password!', 401));
+      /*return next(new ErrorHandler('Invalid email or password!', 401));*/
+      return errorMessageHandler(res, 'Invalid email or password!', 401);
    }
    /**************** checks if password is correct or not ****************/
    const isMatchedPasswords = await user.comparePassword(password);
 
    if (!isMatchedPasswords) {
-      return next(new ErrorHandler('Invalid Email or Password', 401));
+      /*return next(new ErrorHandler('Invalid Email or Password', 401));*/
+      return errorMessageHandler(res, 'Invalid email or password!', 401);
    }
    const {_id, username} = user;
    const jwtToken = jwt.sign({userId: _id}, process.env.JWT_SECRET_KEY, {expiresIn: process.env.JWT_EXPIRES_TIME});
@@ -103,31 +112,35 @@ export const verifyEmailToken = async (req, res, next) => {
 
    if (!isValidObjectId(userId)) {
       /*return res.json({error: 'Invalid user!'});*/
-      return next(new ErrorHandler('Invalid user!', 401));
+      /*return next(new ErrorHandler('Invalid user!', 401));*/
+      return errorMessageHandler(res, 'Invalid user!', 401);
    }
 
    const user = await User.findById(userId)
    if (!user) {
       /*return res.json({error: 'User not found!'});*/
-      return next(new ErrorHandler('User not found!', 404));
-
+      /*return next(new ErrorHandler('User not found!', 404));*/
+      return errorMessageHandler(res, 'User not found!', 404);
    }
 
    if (user.isVerified) {
       /*return res.json({error: 'User already verified!'});*/
-      return next(new ErrorHandler('User already verified', 400));
+      /*return next(new ErrorHandler('User already verified', 400));*/
+      return errorMessageHandler(res, 'User already verified!', 400);
    }
 
    const token = await EmailVerificationToken.findOne({owner: userId})
    if (!token) {
       /*return res.json({error: 'Token not found!'});*/
-      return next(new ErrorHandler('Token not found', 404));
+      /*return next(new ErrorHandler('Token not found', 404));*/
+      return errorMessageHandler(res, 'Token not found!', 404);
    }
 
    const isMatched = await token.compareToken(OTP)
    if (!isMatched) {
       /*return res.json({error: 'Please submit a valid OTP!'});*/
-      return next(new ErrorHandler('Invalid OTP code!', 400));
+      /*return next(new ErrorHandler('Invalid OTP code!', 400));*/
+      return errorMessageHandler(res, 'Invalid OTP code!', 400);
    }
 
    user.isVerified = true;
@@ -149,6 +162,7 @@ export const verifyEmailToken = async (req, res, next) => {
 
    const {username, email} = user;
    const jwtToken = jwt.sign({userId: user._id}, process.env.JWT_SECRET_KEY);
+
    res.json({
       user: { id: user._id, username, email, token: jwtToken },
       message: 'Your email has been verified.',
@@ -161,12 +175,14 @@ export const resendEmailVerificationToken = async (req, res, next) => {
    const user = await User.findById(userId);
    if (!user) {
       /*return res.json({error: 'User not found!'});*/
-      return next(new ErrorHandler('User not found!', 404));
+      /*return next(new ErrorHandler('User not found!', 404));*/
+      return errorMessageHandler(res, 'User not found!', 404);
    }
 
    if (user.isVerified) {
       /*return res.json({error: 'Email already verified!'});*/
-      return next(new ErrorHandler('Email already verified!', 400));
+      /*return next(new ErrorHandler('Email already verified!', 400));*/
+      return errorMessageHandler(res, 'Email already verified!', 400);
    }
 
    const alreadyHasToken = await EmailVerificationToken.findOne({
@@ -174,7 +190,8 @@ export const resendEmailVerificationToken = async (req, res, next) => {
    });
    if (alreadyHasToken)
       /*return res.json({error: 'After one hour, request for another token!'});*/
-      return next(new ErrorHandler('Token already exists! After an hour, request another token!', 400));
+      /*return next(new ErrorHandler('Token already exists! After an hour, request another token!', 400));*/
+   return errorMessageHandler(res, 'Token already exists! After an hour, request another token!', 400);
 
    /**************** generate 6 digit OTP****************/
    let OTP = generateOTPCode();
@@ -208,17 +225,21 @@ export const forgotPassword = async (req, res, next) => {
    const {email} = req.body;
 
    if (!email) {
-      return next(new ErrorHandler('Email is required!'), 400);
+      /*return next(new ErrorHandler('Email is required!'), 400);*/
+      return errorMessageHandler(res, 'Email is required!', 400);
+
    }
 
    const user = await User.findOne({email});
    if (!user) {
-      return next(new ErrorHandler('User not found!', 404));
+      /*return next(new ErrorHandler('User not found!', 404));*/
+      return errorMessageHandler(res, 'User not found!', 400);
    }
 
    const alreadyHasToken = await PasswordResetToken.findOne({owner: user._id});
    if (alreadyHasToken) {
-      return next(new ErrorHandler('Token already exists! After an hour, request another token!', 400));
+      /*return next(new ErrorHandler('Token already exists! After an hour, request another token!', 400));*/
+      return errorMessageHandler(res, 'Token already exists! After an hour, request another token', 400);
    }
 
    const token = await generateRandomByte();
@@ -256,7 +277,8 @@ export const resetPassword = async (req, res, next) => {
    const user = await User.findById(userId);
    const matched = await user.comparePassword(newPassword);
    if (matched) {
-      return next(new ErrorHandler('The new password must be different than the old password!', 400));
+      /*return next(new ErrorHandler('The new password must be different than the old password!', 400));*/
+      return errorMessageHandler(res, 'New password must be different than the old password!', 400);
    }
 
    user.password = newPassword;
@@ -282,7 +304,8 @@ export const resetPassword = async (req, res, next) => {
 };
 
 export const handleNotFound = (req, res, next) => {
-   return next(new ErrorHandler('Resource Not Found!', 404));
+   /*return next(new ErrorHandler('Resource Not Found!', 404));*/
+   return errorMessageHandler(res, 'Resource not found!', 404);
 };
 
 export const isAuthorized = async (req, res, next) => {
