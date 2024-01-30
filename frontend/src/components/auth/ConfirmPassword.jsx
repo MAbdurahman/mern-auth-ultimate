@@ -6,8 +6,7 @@ import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
 
 export default function ConfirmPassword() {
-   return (
-      <FormContainer>
+   return (<FormContainer>
          <Container>
             <form className={themeFormClasses}>
                <Title>Confirm Password</Title>
@@ -26,6 +25,5 @@ export default function ConfirmPassword() {
                <SubmitButton value="Submit"/>
             </form>
          </Container>
-      </FormContainer>
-)
+      </FormContainer>)
 }

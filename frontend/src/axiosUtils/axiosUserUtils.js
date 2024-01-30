@@ -85,6 +85,20 @@ export const forgotPasswordUser = async (email) => {
 
 export const verifyPasswordResetTokenUser = async (token, userId) => {
    await console.log('verifyPasswordResetTokenUser', {token, userId});
+   try {
+      const { data } = await axiosCreate.post('/auth/verify-password-reset-token', {
+         token,
+         userId,
+      });
+      return data;
+   } catch (err) {
+      const { response } = err;
+      if (response?.data) {
+         return response.data;
+      }
+
+      return { error: err.message || err };
+   }
 
 };
 
