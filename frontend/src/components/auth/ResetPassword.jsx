@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useSearchParams} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useSearchParams} from 'react-router-dom';
 import {ImSpinner2} from 'react-icons/im';
 import Container from '../Container';
 import Title from '../Title';
@@ -7,28 +7,67 @@ import FormInput from '../forms/FormInput';
 import SubmitButton from '../forms/SubmitButton';
 import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
+import {useNotification} from '../../hooks/notificationHook';
+import {verifyPasswordResetTokenUser} from '../../axiosUtils/axiosUserUtils';
 
 export default function ResetPassword() {
-   const [isVerifying, setIsVerifying] = useState(true);
+   const [isVerifying, setIsVerifying] = useState(false);
+   const [isValid, setIsValid] = useState(false);
    const [searchParams] = useSearchParams();
    const token = searchParams.get("token");
    const userId = searchParams.get("id");
 
+   const navigate = useNavigate();
+   const {updateNotification} = useNotification();
 
-   if (isVerifying)
+   useEffect(() => {
+      isValidToken();
+   }, []);
+   const isValidToken = async () => {
+      const { error, valid } = await verifyPasswordResetTokenUser(token, userId);
+      setIsVerifying(false);
+      if (error) {
+         navigate('/auth/reset-password', { replace: true });
+         return updateNotification("error", error);
+      }
+
+      if (!valid) {
+         setIsValid(false);
+         return navigate('/auth/reset-password', { replace: true });
+      }
+
+      setIsValid(true);
+   };
+
+
+   if (isVerifying) {
       return (
          <FormContainer>
             <Container>
                <div className="flex space-x-2 items-center">
-                  <h2 className="text-4xl font-semibold dark:text-white text-primary">
+                  <h2
+                     className="text-4xl font-semibold dark:text-white text-primary">
                      Verifying your token!
                   </h2>
-                  <ImSpinner2 className="animate-spin text-4xl dark:text-white text-primary" />
+                  <ImSpinner2
+                     className="animate-spin text-4xl dark:text-white text-primary"/>
                </div>
             </Container>
          </FormContainer>
       );
+   }
 
+   if (!isValid) {
+      return (
+         <FormContainer>
+            <Container>
+               <h2 className="text-4xl font-semibold dark:text-white text-primary">
+                  The token is invalid!
+               </h2>
+            </Container>
+         </FormContainer>
+      );
+   }
 
    return (<FormContainer>
       <Container>

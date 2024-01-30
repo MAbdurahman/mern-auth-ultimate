@@ -6,7 +6,7 @@ import {errorMessageHandler} from '../utils/errorMessageUtils.js';
 export const validatePasswordResetToken = async (req, res, next) => {
    const { token, userId } = req.body;
 
-   if (!token.trim() || !isValidObjectId(userId)) {
+   if (!token || !isValidObjectId(userId)) {
       return errorMessageHandler(res, 'Invalid request!', 400);
    }
    const resetToken = await PasswordResetToken.findOne({ owner: userId });

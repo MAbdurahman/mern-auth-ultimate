@@ -69,12 +69,10 @@ function escapeRegExp(str) {
 function dasherize(str) {
    return trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
 };
-
 export function decapitalize(str) {
    str = makeString(str);
    return str.charAt(0).toLowerCase() + str.slice(1);
 };
-
 export function camelize(str, decapitalize) {
    str = trim(str).replace(/[-_\s]+(.)?/g, function(match, c) {
       return c ? c.toUpperCase() : '';
@@ -86,11 +84,9 @@ export function camelize(str, decapitalize) {
       return str;
    }
 };
-
 function chars(str) {
    return makeString(str).split('');
 };
-
 
 export function slugify(str) {
    return trim(dasherize(cleanDiacritics(str).replace(/[^\w\s-]/g, '-').toLowerCase()), '-');
@@ -115,8 +111,6 @@ export function toNumber(num, precision) {
    var factor = Math.pow(10, isFinite(precision) ? precision : 0);
    return Math.round(num * factor) / factor;
 };
-
-/*const number = numberFormat(2000, 2)*/
 
 export function stripTags(str) {
    return makeString(str).replace(/<\/?[^>]+>/g, '');
