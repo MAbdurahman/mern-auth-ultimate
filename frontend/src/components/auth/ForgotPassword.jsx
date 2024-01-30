@@ -8,38 +8,43 @@ import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
 import {useNotification} from '../../hooks/notificationHook';
 import {validateEmail} from '../../utils/functionUtils';
+import {forgotPasswordUser} from '../../axiosUtils/axiosUserUtils';
 
 export default function ForgotPassword() {
-   const [email, setEmail] = useState("");
-   const { updateNotification } = useNotification();
+   const [email, setEmail] = useState('');
+   const {updateNotification} = useNotification();
 
-   const handleChange = ({ target }) => {
-      const { value } = target;
+   const handleChange = ({target}) => {
+      const {value} = target;
       setEmail(value);
    };
 
    const handleSubmit = async e => {
       e.preventDefault();
-      const {isValid, error} = validateEmail(email);
 
-      if(!isValid) {
-         return updateNotification("error", error);
+      if (validateEmail(email)) {
+         const {isValid, error} = validateEmail(email);
+         if (!isValid) {
+            return updateNotification('error', error);
+         }
       }
 
+      const { error, message } = await forgotPasswordUser(email);
+      if (error) {
+         return updateNotification('error', error);
+      }
 
-
-
-      return updateNotification("success", "Successfully sent email.");
-
+      return updateNotification('success', message);
    }
 
-   return (
-      <FormContainer>
+   return (<FormContainer>
          <Container>
             <form onSubmit={handleSubmit} className={themeFormClasses}>
                <Title>Forgot Password</Title>
-               <FormInput id="email" onChange={handleChange} value={email} label="Email" placeholder="example@email.com" name="email" />
-               <SubmitButton value="Send Email" />
+               <FormInput id="email" onChange={handleChange} value={email}
+                          label="Email" placeholder="example@email.com"
+                          name="email"/>
+               <SubmitButton value="Send Email"/>
 
                <div className="flex justify-end">
                   <CustomLink to="/auth/sign-in">Sign In&nbsp;/</CustomLink>
@@ -47,6 +52,5 @@ export default function ForgotPassword() {
                </div>
             </form>
          </Container>
-      </FormContainer>
-   )
+      </FormContainer>)
 }

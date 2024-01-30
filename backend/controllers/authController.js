@@ -231,7 +231,7 @@ export const forgotPassword = async (req, res, next) => {
       html: `
       <h1>Click the link below to your reset password</h1>
       <p>
-        <a href='${resetPasswordUrl}'>Reset Password</a>
+        <a href='${resetPasswordUrl}'>Reset Password Link</a>
       </p> 
     `,
    });
