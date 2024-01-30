@@ -38,7 +38,7 @@ export default function ForgotPassword() {
          <Container>
             <form onSubmit={handleSubmit} className={themeFormClasses}>
                <Title>Forgot Password</Title>
-               <FormInput id="email" onChange={handleChange} label="Email" placeholder="example@email.com" name="email" />
+               <FormInput id="email" onChange={handleChange} value={email} label="Email" placeholder="example@email.com" name="email" />
                <SubmitButton value="Send Email" />
 
                <div className="flex justify-end">
