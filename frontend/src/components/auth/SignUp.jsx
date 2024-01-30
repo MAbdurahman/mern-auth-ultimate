@@ -55,8 +55,6 @@ export default function SignUp() {
 
    const {username, email, password} = userInfo;
 
-
-
    return (<FormContainer>
       <Container>
          <form onSubmit={handleSubmit} className={themeFormClasses}>
