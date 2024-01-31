@@ -22,6 +22,7 @@ export default function ResetPassword() {
 
    const navigate = useNavigate();
    const {updateNotification} = useNotification();
+   const {one, two} = password;
 
    useEffect(() => {
       isValidToken();
@@ -50,8 +51,8 @@ export default function ResetPassword() {
    const handleSubmit = async e => {
       e.preventDefault();
 
-      if (validatePasswordAndConfirmedPassword(password.one, password.two)) {
-         const {isValid, error} = validatePasswordAndConfirmedPassword(password.one, password.two);
+      if (validatePasswordAndConfirmedPassword(one, two)) {
+         const {isValid, error} = validatePasswordAndConfirmedPassword(one, two);
          if (!isValid) {
             return updateNotification('error', error);
          }
@@ -91,18 +92,22 @@ export default function ResetPassword() {
 
    return (<FormContainer>
       <Container>
-         <form className={themeFormClasses}>
+         <form className={themeFormClasses} onSubmit={handleSubmit}>
             <Title>Reset Password</Title>
             <FormInput
+               value={password.one}
+               onChange={handleChange}
                label="New Password"
                placeholder="*************"
-               name="password"
+               name="one"
                type="password"
             />
             <FormInput
+               value={password.two}
+               onChange={handleChange}
                label="Confirm Password"
                placeholder="*************"
-               name="confirmPassword"
+               name="two"
                type="password"
             />
             <SubmitButton value="Submit"/>

@@ -254,9 +254,9 @@ export function validateUserInfo({username, email, password}) {
    return {isValid: true};
 };
 
-export function validatePasswordAndConfirmedPassword({password_1, password_2}) {
-   let passwordOne = password_1.trim();
-   let passwordTwo = password_2.trim();
+export function validatePasswordAndConfirmedPassword(one, two) {
+   let passwordOne = one;
+   let passwordTwo = two;
 
    const password_pattern = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[-+_!@#$%^&*?]).{8,32}$/i;
    const lowercase_pattern = /^(?=.*[a-z])/g;
