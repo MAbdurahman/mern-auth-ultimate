@@ -254,6 +254,63 @@ export function validateUserInfo({username, email, password}) {
    return {isValid: true};
 };
 
+export function validatePasswordAndConfirmedPassword({password_1, password_2}) {
+   let passwordOne = password_1.trim();
+   let passwordTwo = password_2.trim();
+
+   const password_pattern = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[-+_!@#$%^&*?]).{8,32}$/i;
+   const lowercase_pattern = /^(?=.*[a-z])/g;
+   const uppercase_pattern = /^(?=.*[A-Z])/g;
+   const digit_pattern = /^(?=.*\d{1,})/g;
+   const special_pattern = /(?=.*[-+_!@#$%^&*?])/g;
+
+   if (passwordOne.length === 0) {
+      return {isValid: false, error: 'New password is required!'};
+   }
+   if (!passwordOne.match(lowercase_pattern)) {
+      return {
+         isValid: false,
+         error: 'New password must have at least one lowercase character!'
+      };
+   }
+   if (!passwordOne.match(uppercase_pattern)) {
+      return {
+         isValid: false,
+         error: 'New password must have at least one uppercase character!'
+      };
+   }
+   if (!passwordOne.match(digit_pattern)) {
+      return {
+         isValid: false,
+         error: 'New password must have at least one number character!'
+      };
+   }
+   if (!passwordOne.match(special_pattern)) {
+      return {
+         isValid: false,
+         error: 'New password must include at least one: \'-+_!@#$%^&*?\''
+      };
+   }
+   if (!passwordOne.match(password_pattern)|| passwordOne.length >= 33) {
+      return {
+         isValid: false,
+         error: 'New password must have between 8 and 32 characters!'
+      };
+   }
+
+   if (passwordTwo.length === 0) {
+      return {isValid: false, error: 'Confirmed password is required!'};
+   }
+   if (passwordTwo.length !== passwordOne.length) {
+      return {isValid: false, error: 'Confirmed password must match new password!'};
+   }
+   if (!passwordTwo.match(passwordOne)) {
+      return {isValid: false, error: 'Confirmed password must match new password!'};
+   }
+
+   return {isValid: true};
+};
+
 /*
 console.log(number)
 console.log(toNumber("2.556"))

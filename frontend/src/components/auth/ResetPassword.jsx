@@ -9,8 +9,11 @@ import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
 import {useNotification} from '../../hooks/notificationHook';
 import {verifyPasswordResetTokenUser} from '../../axiosUtils/axiosUserUtils';
+import {validatePasswordAndConfirmedPassword} from '../../utils/functionUtils';
+
 
 export default function ResetPassword() {
+   const [password, setPassword] = useState({one: "", two: ""});
    const [isVerifying, setIsVerifying] = useState(false);
    const [isValid, setIsValid] = useState(false);
    const [searchParams] = useSearchParams();
@@ -38,6 +41,23 @@ export default function ResetPassword() {
 
       setIsValid(true);
    };
+
+   const handleChange =({target}) => {
+      const { name, value } = target;
+      setPassword({ ...password, [name]: value });
+   }
+
+   const handleSubmit = async e => {
+      e.preventDefault();
+
+      if (validatePasswordAndConfirmedPassword(password.one, password.two)) {
+         const {isValid, error} = validatePasswordAndConfirmedPassword(password.one, password.two);
+         if (!isValid) {
+            return updateNotification('error', error);
+         }
+      }
+
+   }
 
 
    if (isVerifying) {
