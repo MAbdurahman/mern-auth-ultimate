@@ -40,7 +40,7 @@ export default function AuthProvider({ children }) {
          return;
       }
 
-      setAuthInfo({...authInfo, isPending: false});
+      setAuthInfo({...authInfo, isPending: true});
       const {error, user} = await getIsAuthorizedUser(token);
       if (error) {
          updateNotification("error", error);
@@ -65,7 +65,6 @@ export default function AuthProvider({ children }) {
       isAuth();
    }, []);
 
-   //  handleLogout
    return (
       <AuthContext.Provider
          value={{authInfo, handleLogin, handleLogout, isAuth}}

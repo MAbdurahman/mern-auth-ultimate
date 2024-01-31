@@ -10,7 +10,6 @@ import AuthProvider from './context/authContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<BrowserRouter>
-
    <NotificationProvider>
       <AuthProvider>
          <ThemeProvider>
@@ -18,5 +17,4 @@ root.render(<BrowserRouter>
          </ThemeProvider>
       </AuthProvider>
    </NotificationProvider>
-
 </BrowserRouter>);
