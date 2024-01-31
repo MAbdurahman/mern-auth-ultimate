@@ -255,8 +255,8 @@ export function validateUserInfo({username, email, password}) {
 };
 
 export function validatePasswordAndConfirmedPassword(one, two) {
-   let passwordOne = one;
-   let passwordTwo = two;
+   let passwordOne = one.trim();
+   let passwordTwo = two.trim();
 
    const password_pattern = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[-+_!@#$%^&*?]).{8,32}$/i;
    const lowercase_pattern = /^(?=.*[a-z])/g;
