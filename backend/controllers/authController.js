@@ -84,11 +84,11 @@ export const signIn = async (req, res, next) => {
    if (!isMatchedPasswords) {
       return errorMessageHandler(res, 'Invalid email or password!', 401);
    }
-   const {_id, username} = user;
+   const {_id, username, isVerified} = user;
    const jwtToken = jwt.sign({userId: _id}, process.env.JWT_SECRET_KEY, {expiresIn: process.env.JWT_EXPIRES_TIME});
 
    await res.status(201).json({
-      user: {id: _id, username, email, token: jwtToken}
+      user: {id: _id, username, email, token: jwtToken, isVerified}
    });
 };
 
@@ -141,11 +141,11 @@ export const verifyEmailToken = async (req, res, next) => {
 `
    })
 
-   const {username, email} = user;
+   const {username, email, isVerified} = user;
    const jwtToken = jwt.sign({userId: user._id}, process.env.JWT_SECRET_KEY);
 
    res.json({
-      user: { id: user._id, username, email, token: jwtToken },
+      user: { id: user._id, username, email, token: jwtToken, isVerified },
       message: 'Your email has been verified.',
    });
 };
@@ -280,7 +280,7 @@ export const handleNotFound = (req, res, next) => {
 
 export const isAuthorized = async (req, res, next) => {
    const { user } = req;
-   /*const {username, email} = user;*/
+   const {username, email, isVerified} = user;
 
-   await res.json({ user: { id: user._id, username: user.username, email: user.email } });
+   await res.json({ user: { id: user._id, username, email, isVerified }});
 };
