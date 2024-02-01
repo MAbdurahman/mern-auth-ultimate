@@ -118,6 +118,20 @@ export const resetPasswordUser = async (passwordInfo) => {
 };
 
 export const resendEmailVerificationTokenUser = async (userId) => {
-   await console.log('resendEmailVerificationTokenUser', {userId});
+   try {
+      const { data } = await axiosCreate.post(
+         "/auth/resend-email-verification-token",
+         { userId }
+      );
+      return data;
+
+   } catch (err) {
+      const { response } = err;
+      if (response?.data) {
+         return response.data;
+      }
+
+      return { error: err.message || err };
+   }
 
 };

@@ -5,7 +5,7 @@ import Title from '../Title';
 import SubmitButton from '../forms/SubmitButton';
 import {themeFormClasses} from '../../utils/themeUtils';
 import FormContainer from '../forms/FormContainer';
-import {verifyEmailTokenUser} from '../../axiosUtils/axiosUserUtils';
+import {resendEmailVerificationTokenUser, verifyEmailTokenUser} from '../../axiosUtils/axiosUserUtils';
 import {useNotification} from '../../hooks/notificationHook';
 import {useAuth} from '../../hooks/authHook';
 
@@ -70,8 +70,14 @@ export default function VerifyEmail() {
    };
 
    const handleResendOTP = async () => {
-      console.log('handleResendOTP')
-   }
+      const { error, message } = await resendEmailVerificationTokenUser(user.id);
+
+      if (error) {
+         return updateNotification('error', error);
+      }
+
+      updateNotification("success", message);
+   };
 
    const handleSubmit = async e => {
       e.preventDefault();
@@ -97,9 +103,9 @@ export default function VerifyEmail() {
    }, [activeOTPIndex]);
 
    useEffect(() => {
-      /*if (!user) {
+      if (!user) {
          navigate('/not-found');
-      }*/
+      }
       if (isLoggedIn && isVerified) {
          navigate('/');
       }
