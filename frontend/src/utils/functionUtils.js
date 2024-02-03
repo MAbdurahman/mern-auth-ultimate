@@ -311,6 +311,20 @@ export function validatePasswordAndConfirmedPassword(one, two) {
    return {isValid: true};
 };
 
+export function validatePhoneNumber(phone) {
+   let phoneNumber = phone.trim();
+
+   const phone_pattern = /^[(]{0,1}[0-9]{3}[)]{0,1}[-\s.]{0,1}[0-9]{3}[-\s.]{0,1}[0-9]{4}$/g;
+
+   if (phoneNumber.length === 0) {
+      return {isValid: false, error: 'A phone number is required!'};
+   }
+   if (!phoneNumber.match(phone_pattern)) {
+      return {isValid: false, error: 'Preferred phone pattern is:  123-456-7890!'};
+   }
+   return {isValid: true};
+}
+
 /*
 console.log(number)
 console.log(toNumber("2.556"))
