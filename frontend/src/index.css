@@ -41,6 +41,7 @@
       font-size: 1.25rem;
    }
 
+
    /* Chrome, Safari, Edge, Opera */
    input::-webkit-outer-spin-button,
    input::-webkit-inner-spin-button {
@@ -53,6 +54,32 @@
    input[type=number] {
       -moz-appearance: textfield;
       @apply font-monospace;
+   }
+   /*=============================================
+      scrollbar styles
+================================================*/
+   /* width */
+   ::-webkit-scrollbar {
+      width: 3px;
+
+   }
+   /* track */
+   ::-webkit-scrollbar-track {
+      margin-left: 4px;
+      box-shadow: inset 0 0 5px #bfbfbf;
+      border-radius: 3px;
+
+   }
+
+   /* handle */
+   ::-webkit-scrollbar-thumb {
+      background: #d9d9d9;
+      border-radius: 3px;
+   }
+
+   /* handle on hover */
+   ::-webkit-scrollbar-thumb:hover {
+      background: #616161;
    }
 }
 
