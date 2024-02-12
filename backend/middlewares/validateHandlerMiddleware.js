@@ -27,6 +27,20 @@ export const validatePassword = [
       .withMessage('Password must have between 8 to 32 characters!')
 ];
 
+export const validateActorInformation = [
+   check("name").trim().not().isEmpty().withMessage("Actor name is required!"),
+   check("biography")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage('Brief biography is required!'),
+   check("gender")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage('Gender is required!'),
+];
+
 export const executeValidator = (req, res, next) => {
    const error = validationResult(req).array();
    if (error.length) {

@@ -7,7 +7,7 @@ const actorModel = new mongoose.Schema({
          trim: true,
          required: true,
       },
-      about: {
+      biography: {
          type: String,
          trim: true,
          required: true,
