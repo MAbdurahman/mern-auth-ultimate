@@ -12,6 +12,7 @@ import {errorMiddlewareHandler} from './middlewares/errorMiddleware.js';
 import {handleNotFound} from './controllers/authController.js';
 
 import authRoutes from './routes/authRoutes.js';
+import actorRoutes from './routes/actorRoutes.js';
 
 //**************** configuration setup ****************//
 dotenv.config({path: 'backend/config/config.env'});
@@ -44,6 +45,8 @@ app.get('/api/v1.0/', (req, res) => {
 });
 
 app.use('/api/v1.0/auth', authRoutes);
+app.use('/api/v1.0/actor', actorRoutes);
+
 if (process.env.NODE_ENV === 'PRODUCTION') {
     const __dirname = path.resolve();
     app.use(express.static(path.join(__dirname, '/frontend/dist')));
